@@ -1,0 +1,15 @@
+.container-bg {
+  background: rgb(236, 236, 236);
+  background: linear-gradient(
+    90deg,
+    rgba(236, 236, 236, 1) 0%,
+    rgba(255, 255, 255, 1) 60%
+  );
+}
+
+.bg-circle {
+  background: #1facf4;
+  border-radius: 50%;
+  width: 90px;
+  height: 90px;
+}

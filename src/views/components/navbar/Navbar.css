@@ -1,0 +1,40 @@
+:root {
+  --green: #8cc454;
+}
+
+body {
+  padding-top: 70px;
+}
+
+.custom-nav {
+  background: white;
+}
+
+.navbar-logo {
+  font-family: Damion;
+  font-size: 35px;
+  line-height: 30px;
+  letter-spacing: 0.2px;
+  color: black;
+}
+
+.navbar-text {
+  font-family: Jost;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 17px;
+  letter-spacing: 0.3px;
+  color: black;
+  transition: all ease-in-out 200ms;
+  margin-right: 20px !important;
+  opacity: 90%;
+  padding: 7px;
+}
+
+.navbar-text:hover {
+  color: var(--green);
+  cursor: pointer;
+  opacity: 100%;
+  padding: 7px;
+  border-bottom: 3px solid var(--green);
+}

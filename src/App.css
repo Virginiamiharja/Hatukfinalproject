@@ -1,38 +1,62 @@
-.App {
-  text-align: center;
+body {
+  font-family: Jost !important;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+h1 {
+  font-family: Jost;
+  font-weight: bold !important;
+  font-size: 50px;
+  line-height: 72px;
+  letter-spacing: 0.2px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+h2 {
+  font-family: Jost;
+  font-weight: bold !important;
+  font-size: 45px;
+  line-height: 56px;
+  letter-spacing: 0.2px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+h3 {
+  font-family: Jost;
+  font-weight: bold !important;
+  font-size: 40px;
+  line-height: 40px;
+  letter-spacing: 0.1px;
 }
 
-.App-link {
-  color: #61dafb;
+h4 {
+  font-family: Jost;
+  font-weight: bold !important;
+  font-size: 35px;
+  line-height: 32px;
+  letter-spacing: 0.2px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+h5 {
+  font-family: Jost;
+  font-style: normal;
+  font-weight: bold !important;
+  font-size: 30px;
+  line-height: 26px;
+  letter-spacing: 0.1px;
+}
+
+h6 {
+  font-family: Jost;
+  font-style: normal;
+  font-weight: bold !important;
+  font-size: 24px;
+  line-height: 24px;
+  letter-spacing: 0.1px;
+}
+
+p {
+  font-family: Jost;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 17px;
+  letter-spacing: 0.3px;
+  margin: 0 !important;
 }

@@ -1,0 +1,14 @@
+.article-category {
+  font-family: Jost;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 20px;
+  letter-spacing: 0.3px;
+  margin: 0 !important;
+  color: black;
+  transition: all ease-in-out 200ms;
+}
+
+.article-category:hover {
+  color: var(--pacific-blue);
+}

@@ -1,0 +1,8 @@
+:root {
+  --pacific-blue: #00b4d8;
+}
+
+.card-background {
+  width: 100%;
+  opacity: 90%;
+}

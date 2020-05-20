@@ -1,0 +1,87 @@
+:root {
+  --coral: #fba43c;
+  --green: #8cc454;
+  --dodger-blue: #1facf4;
+  --slate-blue: #5c54c4;
+  --tomato: #f34840;
+}
+
+.custom-btn {
+  padding: 9px 30px;
+  vertical-align: middle;
+  text-align: center;
+  font-family: Jost;
+  font-style: normal;
+  font-weight: 550;
+  font-size: 15px;
+  line-height: 18px;
+  letter-spacing: 0.3px;
+  border-radius: 5px;
+  width: fit-content;
+  transition: all ease-in-out 200ms;
+}
+
+.custom-btn-coral {
+  border: 1px solid var(--coral);
+  background-color: var(--coral);
+  color: white;
+}
+
+.custom-btn-coral:hover {
+  border: 1px solid var(--coral);
+  background-color: white;
+  color: black;
+  cursor: pointer;
+}
+
+.custom-btn-green {
+  border: 1px solid var(--green);
+  background-color: var(--green);
+  color: white;
+}
+
+.custom-btn-green:hover {
+  border: 1px solid var(--green);
+  background-color: white;
+  color: black;
+  cursor: pointer;
+}
+
+.custom-btn-dodger-blue {
+  border: 1px solid var(--dodger-blue);
+  background-color: var(--dodger-blue);
+  color: white;
+}
+
+.custom-btn-dodger-blue:hover {
+  border: 1px solid var(--dodger-blue);
+  background-color: white;
+  color: black;
+  cursor: pointer;
+}
+
+.custom-btn-slate-blue {
+  border: 1px solid var(--slate-blue);
+  background-color: var(--slate-blue);
+  color: white;
+}
+
+.custom-btn-slate-blue:hover {
+  border: 1px solid var(--slate-blue);
+  background-color: white;
+  color: black;
+  cursor: pointer;
+}
+
+.custom-btn-tomato {
+  border: 1px solid var(--tomato);
+  background-color: var(--tomato);
+  color: white;
+}
+
+.custom-btn-tomato:hover {
+  border: 1px solid var(--tomato);
+  background-color: white;
+  color: black;
+  cursor: pointer;
+}
