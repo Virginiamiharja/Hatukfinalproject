@@ -108,7 +108,7 @@ class Home extends React.Component {
   renderMission = () => {
     return this.state.mission.map((value) => {
       return (
-        <div className="d-flex col-6 justify-content-start align-items-center mt-3">
+        <div className="d-flex col-6 justify-content-start align-items-center mb-3">
           <div className="d-flex bg-circle justify-content-center align-items-center  ">
             <FontAwesomeIcon
               icon={value.icon}
@@ -178,7 +178,13 @@ class Home extends React.Component {
             <h1>Book an Appointment</h1>
             <p style={{ fontSize: "30px" }}>with Our Certified Therapist</p>
             <div className="d-flex mt-1" style={{ width: "450px" }}>
-              <Input type="text" placeholder="Find the best therapist!" />
+              <Input type="select">
+                <option>All..</option>
+                <option>Autism</option>
+                <option>ADHD</option>
+                <option>Dyslexia</option>
+                <option>Learning Disabilities</option>
+              </Input>
               <ButtonCstm className="ml-3" type="green">
                 Search
               </ButtonCstm>

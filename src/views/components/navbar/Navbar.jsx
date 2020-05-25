@@ -23,7 +23,7 @@ class NavbarCstm extends React.Component {
             <NavLink href="/" className="navbar-text">
               Home
             </NavLink>
-            <NavLink href="#about" className="navbar-text">
+            <NavLink href="/#about" className="navbar-text">
               About
             </NavLink>
             <NavLink href="/article" className="navbar-text">

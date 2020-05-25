@@ -10,6 +10,7 @@ import Footer from "./views/components/footer/Footer";
 import Home from "./views/screens/home/Home";
 import Article from "./views/screens/article/Article";
 import School from "./views/screens/school/School";
+import ArticleDetails from "./views/screens/article/ArticleDetails";
 
 class App extends React.Component {
   render() {
@@ -26,7 +27,11 @@ class App extends React.Component {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/article" component={Article} />
-          {/* <Route exact path="/article/:articleId" component={ArticleDetails} /> */}
+          <Route
+            exact
+            path="/readarticle/:articleId"
+            component={ArticleDetails}
+          />
           <Route exact path="/school" component={School} />
         </Switch>
         <Footer />
