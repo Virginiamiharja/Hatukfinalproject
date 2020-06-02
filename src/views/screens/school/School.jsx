@@ -42,7 +42,7 @@ class School extends React.Component {
 
   render() {
     return (
-      <div className="d-flex flex-column justify-content-center align-items-center">
+      <div className="d-flex border flex-column justify-content-center align-items-center pb-3">
         <h2>
           <span style={{ color: "#7209b7" }}>List of </span>
           <span style={{ color: "#f77f00" }}>School</span>

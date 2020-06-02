@@ -23,7 +23,8 @@ class Category extends React.Component {
           <CardImgOverlay
             style={{
               backgroundColor: "black",
-              opacity: "50%",
+              // Inget karen pake firefox opacity gabisa yang 50% jadi harus 0.5
+              opacity: "0.5",
               borderRadius: "3px"
             }}
           />

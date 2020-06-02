@@ -2,10 +2,11 @@ import React from "react";
 import "./Navbar.css";
 import { Navbar, NavbarBrand, Nav, NavItem, NavLink } from "reactstrap";
 import ButtonCstm from "../button/Button";
+import { Link } from "react-router-dom";
 
 class NavbarCstm extends React.Component {
   state = {
-    dropdownOpen: false
+    dropdownOpen: false,
   };
 
   onClick = () => {
@@ -39,7 +40,9 @@ class NavbarCstm extends React.Component {
               Therapist
             </NavLink>
             <NavItem>
-              <ButtonCstm type="coral"> Join Us !</ButtonCstm>
+              <Link to="/auth" style={{ textDecoration: "none" }}>
+                <ButtonCstm type="coral">Join Us!</ButtonCstm>
+              </Link>
             </NavItem>
           </Nav>
         </Navbar>

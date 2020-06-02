@@ -33,7 +33,7 @@ class ArticleDetails extends React.Component {
 
   render() {
     return (
-      <div className="d-flex justify-content-center pb-3">
+      <div className="d-flex border justify-content-center pb-3">
         {/* Column Article Details */}
         <div className="col-7 flex-column justify-content-center align-items-center p-3">
           {/* Section 1 */}

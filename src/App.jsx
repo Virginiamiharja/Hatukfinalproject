@@ -11,6 +11,7 @@ import Home from "./views/screens/home/Home";
 import Article from "./views/screens/article/Article";
 import School from "./views/screens/school/School";
 import ArticleDetails from "./views/screens/article/ArticleDetails";
+import Authentication from "./views/screens/auth/Authentication";
 
 class App extends React.Component {
   render() {
@@ -33,6 +34,7 @@ class App extends React.Component {
             component={ArticleDetails}
           />
           <Route exact path="/school" component={School} />
+          <Route exact path="/auth" component={Authentication} />
         </Switch>
         <Footer />
       </div>
