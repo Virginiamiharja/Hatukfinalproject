@@ -5,14 +5,21 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter } from "react-router-dom";
 import { ParallaxProvider } from "react-scroll-parallax";
+// Redux
+import { Provider } from "react-redux";
+import reducers from "./redux/reducers";
+import { createStore, applyMiddleware } from "redux";
+import ReduxThunk from "redux-thunk";
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <ParallaxProvider>
-        <App />
-      </ParallaxProvider>
-    </BrowserRouter>
+    <Provider store={createStore(reducers, {}, applyMiddleware(ReduxThunk))}>
+      <BrowserRouter>
+        <ParallaxProvider>
+          <App />
+        </ParallaxProvider>
+      </BrowserRouter>
+    </Provider>
   </React.StrictMode>,
   document.getElementById("root")
 );

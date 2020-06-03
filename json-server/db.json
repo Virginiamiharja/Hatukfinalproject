@@ -1,0 +1,84 @@
+{
+  "cities": [
+    {
+      "id": "1",
+      "cityName": "Jakarta Utara"
+    },
+    {
+      "id": "2",
+      "cityName": "Jakarta Timur"
+    },
+    {
+      "id": "3",
+      "cityName": "Jakarta Barat"
+    },
+    {
+      "id": "4",
+      "cityName": "Jakarta Selatan"
+    },
+    {
+      "id": "5",
+      "cityName": "Jakarta Pusat"
+    }
+  ],
+
+  "subdistricts": [
+    {
+      "id": "1",
+      "cityId": "1",
+      "subdisName": "Cilincing"
+    },
+    {
+      "id": "2",
+      "cityId": "1",
+      "subdisName": "Kelapa Gading"
+    },
+    {
+      "id": "3",
+      "cityId": "1",
+      "subdisName": "Tanjung Priok"
+    }
+  ],
+
+  "areas": [
+    {
+      "id": "1",
+      "subdistrictId": "3",
+      "areaName": "Sunter Agung"
+    },
+    {
+      "id": "2",
+      "subdistrictId": "3",
+      "areaName": "Sunter Jaya"
+    },
+    {
+      "id": "1",
+      "subdistrictId": "2",
+      "areaName": "Kelapa Gading Barat"
+    }
+  ],
+
+  "users": [
+    {
+      "id": "1",
+      "name": "Gusti Virginia Miharja",
+      "username": "virginiamiharja",
+      "email": "virgnm@gmail.com",
+      "password": "pass123",
+      "phoneNumber": "081295280339",
+      "role": "user"
+    }
+  ],
+
+  "address": [
+    {
+      "id": "1",
+      "userId": "1",
+      "cityId": "1",
+      "subdistrictId": "3",
+      "areaId": "1",
+      "streetName": "Agung Utara 3C Blok A 28",
+      "houseNo": "20"
+    }
+  ]
+}
