@@ -58,7 +58,7 @@ class ArticleCard extends React.Component {
             top
             width="100%"
             src="https://media.edutopia.org/styles/responsive_2880px_16x9/s3/masters/2018-05/shutterstock_141101980_master.jpg"
-            alt="Card image cap"
+            alt="Article Image"
           />
           <CardBody>
             <CardTitle className="article-title">
@@ -67,7 +67,7 @@ class ArticleCard extends React.Component {
             <CardSubtitle className="mt-1">
               {this.renderArticleCategory()}
             </CardSubtitle>
-            <CardText className="mt-2" style={{ height: "150px" }}>
+            <CardText className="mt-2 text-justify" style={{ height: "150px" }}>
               {this.renderArticleContent()}
             </CardText>
             <div className="d-flex mt-2" style={{ opacity: "90%" }}>

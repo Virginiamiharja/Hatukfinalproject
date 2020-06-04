@@ -58,6 +58,13 @@
     }
   ],
 
+  "categories": [
+    { "id": "1", "categoryName": "Autism" },
+    { "id": "2", "categoryName": "ADHD" },
+    { "id": "3", "categoryName": "Dyslexia" },
+    { "id": "4", "categoryName": "Learning Disabilities" }
+  ],
+
   "users": [
     {
       "id": "1",
@@ -67,6 +74,24 @@
       "password": "pass123",
       "phoneNumber": "081295280339",
       "role": "user"
+    },
+    {
+      "id": "2",
+      "name": "Admin",
+      "username": "admin",
+      "email": "admin@gmail.com",
+      "password": "admin",
+      "phoneNumber": "081295280667",
+      "role": "admin"
+    },
+    {
+      "id": "3",
+      "name": "Talita Setyadi",
+      "username": "talitasetyadi",
+      "email": "talita12@gmail.com",
+      "password": "pass123",
+      "phoneNumber": "081296745667",
+      "role": "therapist"
     }
   ],
 
@@ -79,6 +104,65 @@
       "areaId": "1",
       "streetName": "Agung Utara 3C Blok A 28",
       "houseNo": "20"
+    },
+    {
+      "id": "2",
+      "userId": "2",
+      "cityId": "1",
+      "subdistrictId": "3",
+      "areaId": "1",
+      "streetName": "Agung Utara 3C Blok A 28",
+      "houseNo": "20"
+    },
+    {
+      "id": "3",
+      "userId": "3",
+      "cityId": "1",
+      "subdistrictId": "3",
+      "areaId": "1",
+      "streetName": "Agung Utara 3D Blok A 30",
+      "houseNo": "10"
+    }
+  ],
+
+  "articles": [
+    {
+      "id": "1",
+      "articleTitle": "Skills to Develop Your Child Memory",
+      "articleImage": "https://media.edutopia.org/styles/responsive_2880px_16x9/s3/masters/2018-05/shutterstock_141101980_master.jpg",
+      "articleContent": "",
+      "publishedDate": "04/06/2020",
+      "userId": 2
+    }
+  ],
+
+  "articleCategories": [
+    {
+      "articleId": "1",
+      "categoryId": "1"
+    },
+    {
+      "articleId": "1",
+      "categoryId": "2"
+    },
+    {
+      "articleId": "1",
+      "categoryId": "3"
+    }
+  ],
+
+  "haveSeenArticles": [
+    {
+      "articleId": "1",
+      "userId": "1"
+    },
+    {
+      "articleId": "1",
+      "userId": "2"
+    },
+    {
+      "articleId": "1",
+      "userId": "3"
     }
   ]
 }
