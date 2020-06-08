@@ -15,17 +15,10 @@ import Authentication from "./views/screens/auth/Authentication";
 
 class App extends React.Component {
   render() {
-    const settings = {
-      dots: true,
-      infinite: true,
-      speed: 500,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-    };
     return (
       <div>
         <Navbar />
-        {/* <Switch>
+        <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/article" component={Article} />
           <Route
@@ -35,7 +28,7 @@ class App extends React.Component {
           />
           <Route exact path="/school" component={School} />
           <Route exact path="/auth" component={Authentication} />
-        </Switch> */}
+        </Switch>
         {/* <Footer /> */}
       </div>
     );

@@ -1,7 +1,6 @@
 import React from "react";
 import "./Home.css";
-import ButtonCstm from "../../components/button/Button";
-import { Input } from "reactstrap";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faFacebook,
@@ -14,10 +13,12 @@ import {
   faClock,
   faUsers,
   faQuoteRight,
+  faArrowCircleRight,
 } from "@fortawesome/free-solid-svg-icons";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import Image1 from "../../../assets/images/Background.jpg";
 
 class Home extends React.Component {
   state = {
@@ -140,11 +141,7 @@ class Home extends React.Component {
     // Ini untuk slider bawaan react
     const settings = {
       dots: true,
-      // Kenapa auto playnya ga jalan ya ?
-      autoPlay: true,
-      autoPlaySpeed: 500,
-      //
-      arrows: false,
+      arrows: true,
       infinite: true,
       speed: 500,
       slidesToShow: 1,
@@ -152,57 +149,43 @@ class Home extends React.Component {
     };
 
     return (
-      <div className="d-flex flex-column justify-content-center">
+      <div className="d-flex flex-column">
         {/* Section 1 */}
-        <div className="d-flex container-bg">
-          {/* Social Media */}
-          <div className="d-flex col-1 flex-column align-items-center justify-content-center">
-            <FontAwesomeIcon
-              icon={faFacebook}
-              className="mb-4"
-              style={{ color: "#A1A1A8", fontSize: "15px" }}
-            />
-            <FontAwesomeIcon
-              icon={faInstagram}
-              className="mb-4"
-              style={{ color: "#A1A1A8", fontSize: "15px" }}
-            />
-            <FontAwesomeIcon
-              icon={faTwitter}
-              className="mb-4"
-              style={{ color: "#A1A1A8", fontSize: "15px" }}
-            />
-          </div>
-          {/* Search */}
-          <div className="d-flex col-5 flex-column justify-content-center align-items-center">
-            <h1>Book an Appointment</h1>
-            <p style={{ fontSize: "30px" }}>with Our Certified Therapist</p>
-            <div className="d-flex mt-1" style={{ width: "450px" }}>
-              <Input type="select">
-                <option>All..</option>
-                <option>Autism</option>
-                <option>ADHD</option>
-                <option>Dyslexia</option>
-                <option>Learning Disabilities</option>
-              </Input>
-              <ButtonCstm className="ml-3" type="green">
-                Search
-              </ButtonCstm>
-            </div>
+        <div className="d-flex flex-column flex-xl-row justify-content-around align-items-center">
+          {/* Card */}
+          <div
+            className="d-flex flex-column justify-content-center p-4 col-8 col-sm-6 col-xl-4"
+            style={{
+              height: "60%",
+              background: "#fc8454",
+              color: "white",
+            }}
+          >
+            <h3>Book an Appointment with Our Therapist</h3>
+            <p className="mb-5">
+              Use our service to find the best therapist for your children
+            </p>
+            <Link className="d-flex align-items-center card-link">
+              <p>More info &nbsp;</p>
+              <FontAwesomeIcon
+                icon={faArrowCircleRight}
+                style={{ fontSize: "20px" }}
+              />
+            </Link>
           </div>
           {/* Image */}
-          <div className="d-flex col-6 justify-content-center">
+          <div className="d-none d-md-flex col-sm-3 col-md-4 col-xl-6 align-items-center">
             <img
-              src="http://pngimg.com/uploads/children/children_PNG18053.png"
-              alt=""
+              src={Image1}
+              alt="Kid image"
               className=""
-              style={{ height: "380px" }}
+              style={{ width: "100%" }}
             />
           </div>
         </div>
 
         {/* Section 2*/}
-        <div className="d-flex" style={{ height: "160px", color: "white" }}>
+        {/* <div className="d-flex" style={{ height: "160px", color: "white" }}>
           <div
             className="col-4 d-flex flex-column justify-content-center align-items-center"
             style={{ background: "#1FACF4" }}
@@ -233,10 +216,10 @@ class Home extends React.Component {
               commodo ligula eget dolor. Aenean massa.
             </p>
           </div>
-        </div>
+        </div> */}
 
         {/* Section 3 */}
-        <div
+        {/* <div
           id="about"
           className="d-flex justify-content-start align-items-start p-5"
         >
@@ -249,22 +232,22 @@ class Home extends React.Component {
               Donec quam felis, ultricies nec, pellentesque eu, pretium quis,
               sem. Nulla consequat massa quis enim. Donec pede justo, fringilla
               vel, aliquet nec, vulputate eget, arcu.
-            </p>
-            {/* Mission */}
-            <h3 className="mb-3">Our Mission</h3>
+            </p> */}
+        {/* Mission */}
+        {/* <h3 className="mb-3">Our Mission</h3>
             <div className="d-flex flex-wrap justify-content-center align-items-center">
               {this.renderMission()}
             </div>
-          </div>
-          {/* Why us */}
-          <div className="d-flex col-5 flex-column">
+          </div> */}
+        {/* Why us */}
+        {/* <div className="d-flex col-5 flex-column">
             <h3 className="mb-3">Why Us?</h3>
             {this.renderReason()}
           </div>
-        </div>
+        </div> */}
 
         {/* Section 4 */}
-        <div
+        {/* <div
           className="d-flex flex-column justify-content-center align-items-center p-5"
           style={{ background: "#F2F2F2" }}
         >
@@ -280,7 +263,7 @@ class Home extends React.Component {
           <div className="d-flex col-8 flex-column">
             <Slider {...settings}>{this.renderParentTestimonials()}</Slider>
           </div>
-        </div>
+        </div> */}
       </div>
     );
   }
