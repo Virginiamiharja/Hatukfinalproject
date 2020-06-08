@@ -1,8 +1,13 @@
 const init_state = {
   id: 0,
+  name: "",
   username: "",
+  email: "",
   password: "",
+  phoneNumber: "",
+  role: "",
   errMsg: "",
+  cookieChecker: "",
 };
 
 export default (state = init_state, action) => {

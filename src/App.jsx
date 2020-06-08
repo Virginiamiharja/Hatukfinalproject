@@ -25,7 +25,7 @@ class App extends React.Component {
     return (
       <div>
         <Navbar />
-        <Switch>
+        {/* <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/article" component={Article} />
           <Route
@@ -35,8 +35,8 @@ class App extends React.Component {
           />
           <Route exact path="/school" component={School} />
           <Route exact path="/auth" component={Authentication} />
-        </Switch>
-        <Footer />
+        </Switch> */}
+        {/* <Footer /> */}
       </div>
     );
   }
