@@ -1,6 +1,8 @@
 :root {
-  --coral: #fba43c;
-  --green: #8cc454;
+  --coral: #fc8454;
+  --green: #8ccc7c;
+  --light-blue: #84c4d4;
+  --sandy-brown: #f4cc3c;
   --dodger-blue: #1facf4;
   --slate-blue: #5c54c4;
   --tomato: #f34840;
@@ -42,6 +44,32 @@
 
 .custom-btn-green:hover {
   border: 1px solid var(--green);
+  background-color: white;
+  color: black;
+  cursor: pointer;
+}
+
+.custom-btn-light-blue {
+  border: 1px solid var(--light-blue);
+  background-color: var(--light-blue);
+  color: white;
+}
+
+.custom-btn-light-blue:hover {
+  border: 1px solid var(--light-blue);
+  background-color: white;
+  color: black;
+  cursor: pointer;
+}
+
+.custom-btn-sandy-brown {
+  border: 1px solid var(--sandy-brown);
+  background-color: var(--sandy-brown);
+  color: white;
+}
+
+.custom-btn-sandy-brown:hover {
+  border: 1px solid var(--sandy-brown);
   background-color: white;
   color: black;
   cursor: pointer;

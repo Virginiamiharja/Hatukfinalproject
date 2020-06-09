@@ -8,6 +8,12 @@ import {
   faCalendarAlt,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
+import { Form, Input, Row, Col, FormGroup } from "reactstrap";
+import ButtonCstm from "../button/Button";
+import facebook from "../../../assets/icons/facebook.png";
+import twitter from "../../../assets/icons/twitter.png";
+import instagram from "../../../assets/icons/instagram.png";
+import linkedin from "../../../assets/icons/linkedin.png";
 
 class Footer extends React.Component {
   state = {
@@ -17,10 +23,11 @@ class Footer extends React.Component {
   renderLatestArticle = () => {
     return this.state.latestArticle.map((value) => {
       return (
-        <div className="d-flex mb-2 align-items-center justify-content-center">
+        <div className="d-flex mb-4 align-items-center justify-content-center">
           <img
             src="https://media.edutopia.org/styles/responsive_2880px_16x9/s3/masters/2018-05/shutterstock_141101980_master.jpg"
             alt=""
+            className="rounded"
             style={{ height: "100px" }}
           />
           <div className="d-flex ml-2 flex-column">
@@ -66,61 +73,124 @@ class Footer extends React.Component {
   render() {
     return (
       <div
-        className="d-flex footer-body flex-column justify-content-center align-items-start p-5"
-        style={{ background: "#282424" }}
+        className="d-flex footer-body flex-column justify-content-center align-items-start p-4"
+        style={{ background: "#444c4c" }}
       >
-        {/* Section 1 */}
-        <div className="d-flex mb-5">
-          <div className="d-flex flex-column col-4">
-            <h4 className="mb-4">Have a Question?</h4>
-            {/* Alamat */}
+        {/* Section 1 - Column 1 */}
+        <div className="d-flex flex-wrap mb-5">
+          <div className="d-flex flex-column col-12 col-md-6 col-lg-4">
+            <div className="d-flex mb-2">
+              <div className="brand-text1">
+                <span style={{ color: "#fc8454" }}>M</span>
+                <span style={{ color: "#84c4d4" }}>O</span>
+                <span style={{ color: "#8ccc7c" }}>M</span>
+                &nbsp;
+                <span style={{ color: "#f4cc3c" }}>&bull;</span>
+                &nbsp;
+              </div>
+              <div className="brand-text2">Story</div>
+            </div>
+            {/* Description */}
+            <p className="mb-4">
+              We help your children develop properly and grow through hands-on
+              learning and fun experiences.
+            </p>
+            {/* Address */}
             <div className="d-flex align-items-center mb-4">
               <FontAwesomeIcon
                 icon={faMapMarkerAlt}
-                className="mb-2 col-2"
-                style={{ fontSize: "20px" }}
+                className="col-2"
+                style={{ fontSize: "20px", color: "#fc8454" }}
               />
-              <p className="ml-3" style={{ opacity: "90%" }}>
-                Agung Utara 3C Blok A 28 No 20, Sunter Agung, Jakarta Utara, DKI
-                Jakarta
+              <p className="">
+                Jl. Menteng Raya blok.FA.1/21 sektor 7, Bintaro Jaya Tangerang
+                Selatan, 15224.
               </p>
             </div>
             {/* Telephone */}
             <div className="d-flex align-items-center mb-4">
               <FontAwesomeIcon
                 icon={faPhoneAlt}
-                className="mb-2 col-2"
-                style={{ fontSize: "20px" }}
+                className="col-2"
+                style={{ fontSize: "20px", color: "#fc8454" }}
               />
-              <p className="ml-3" style={{ opacity: "90%" }}>
-                021-6508978
-              </p>
+              <p>021-6508978</p>
             </div>
             {/* Email */}
             <div className="d-flex align-items-center mb-4">
               <FontAwesomeIcon
                 icon={faEnvelope}
-                className="mb-2 col-2"
-                style={{ fontSize: "20px" }}
+                className="col-2"
+                style={{ fontSize: "20px", color: "#fc8454" }}
               />
-              <p className="ml-3" style={{ opacity: "90%" }}>
-                momstory@gmail.com
-              </p>
+              <p>momstory@gmail.com</p>
             </div>
           </div>
-          <div className="d-flex flex-column col-4">
-            <h4 className="mb-4">Latest Article</h4>
+          {/* Section 1 - Column 2 */}
+          <div className="d-flex flex-column col-12 col-md-6 col-lg-4">
+            <h4 className="mb-4 mt-2">Latest Article</h4>
             {this.renderLatestArticle()}
           </div>
-          <div className="d-flex flex-column col-4 border">
-            <h4>Bingung</h4>
+          {/* Section 1 - Column 3 */}
+          <div className="d-flex flex-column col-12 col-lg-4">
+            <h4 className="mb-4 mt-2">Contact Us</h4>
+            <Form className="d-flex flex-column justify-content-center align-items-center mt-2">
+              <Row form>
+                <Col md={6}>
+                  <FormGroup>
+                    <Input type="text" placeholder="Name" className="mb-3" />
+                  </FormGroup>
+                </Col>
+                <Col md={6}>
+                  <FormGroup>
+                    <Input type="email" placeholder="Email" className="mb-3" />
+                  </FormGroup>
+                </Col>
+              </Row>
+              <Input
+                type="textarea"
+                name="text"
+                placeholder="Message"
+                className="mb-3"
+              />
+            </Form>
+            <ButtonCstm type="coral" className="mb-4">
+              Submit
+            </ButtonCstm>
+            <h6>Connect with Us</h6>
+            <div className="d-flex ">
+              <img
+                src={facebook}
+                alt=""
+                className="mr-2"
+                style={{ width: "30px" }}
+              />
+              <img
+                src={twitter}
+                alt=""
+                className="mr-2"
+                style={{ width: "30px" }}
+              />
+              <img
+                src={instagram}
+                alt=""
+                className="mr-2"
+                style={{ width: "30px" }}
+              />
+              <img
+                src={linkedin}
+                alt=""
+                className="mr-2"
+                style={{ width: "30px" }}
+              />
+            </div>
           </div>
         </div>
 
         {/* Section 2 */}
         <div className="d-flex col-12 justify-content-center ">
-          <p style={{ fontSize: "15px", opacity: "70%" }}>
-            © 2020 Virginia Miharja All Rights Reserved
+          <p style={{ fontSize: "15px", opacity: "0.8" }}>
+            © 2020 Mom Story All Rights Reserved
           </p>
         </div>
       </div>

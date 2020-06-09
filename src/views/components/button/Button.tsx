@@ -2,7 +2,14 @@ import React, { CSSProperties } from "react";
 import "./Button.css";
 
 type ButtonTypes = {
-  type?: "coral" | "slate-blue" | "green" | "tomato" | "dodger-blue";
+  type?:
+    | "coral"
+    | "slate-blue"
+    | "green"
+    | "tomato"
+    | "dodger-blue"
+    | "light-blue"
+    | "sandy-brown";
   children: any;
   style?: CSSProperties;
   className?: string;
