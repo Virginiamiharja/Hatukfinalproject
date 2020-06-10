@@ -147,9 +147,9 @@ class Authentication extends React.Component {
     if (this.state.activePage) {
       return (
         // Login Page
-        <div className="d-flex border flex-column flex-lg-row justify-content-center align-items-center p-4">
+        <div className="d-flex flex-column flex-lg-row justify-content-center align-items-center p-4">
           {/* Section 1 */}
-          <div className="d-flex flex-column border col-4">
+          <div className="d-flex flex-column col-4">
             <h3>Login</h3>
             {/* Quotes */}
             <div className="d-flex">
@@ -250,7 +250,7 @@ class Authentication extends React.Component {
     } else {
       return (
         // Registration Page
-        <div className="d-flex border flex-column flex-lg-row justify-content-center align-items-center p-4">
+        <div className="d-flex flex-column flex-lg-row justify-content-center align-items-center p-4">
           {/* Section 1 */}
           <div className="d-flex flex-column col-4">
             <h3>Register</h3>

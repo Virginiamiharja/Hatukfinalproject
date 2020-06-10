@@ -1,9 +1,9 @@
 import React from "react";
 import "./Article.css";
 import { Link } from "react-router-dom";
-import Twitter from "../../../assets/icons/Twitter.png";
-import Facebook from "../../../assets/icons/Facebook.png";
-import Mail from "../../../assets/icons/Mail.png";
+import Twitter from "../../../assets/icons/twitter.png";
+import Facebook from "../../../assets/icons/facebook.png";
+import Mail from "../../../assets/icons/mail.png";
 
 class ArticleDetails extends React.Component {
   renderArticleCategory = () => {

@@ -73,6 +73,46 @@
       "categoryName": "Learning Disabilities"
     }
   ],
+  "days": [
+    {
+      "id": 1,
+      "day": "Monday"
+    },
+    {
+      "id": 2,
+      "day": "Tuesday"
+    },
+    {
+      "id": 3,
+      "day": "Wednesday"
+    },
+    {
+      "id": 4,
+      "day": "Thursday"
+    },
+    {
+      "id": 5,
+      "day": "Friday"
+    }
+  ],
+  "workinghours": [
+    {
+      "id": 1,
+      "hour": "09.00 AM"
+    },
+    {
+      "id": 2,
+      "hour": "11.00 AM"
+    },
+    {
+      "id": 3,
+      "hour": "01.00 PM"
+    },
+    {
+      "id": 4,
+      "hour": "03.00 PM"
+    }
+  ],
   "users": [
     {
       "id": 1,
@@ -81,6 +121,7 @@
       "email": "virgnm@gmail.com",
       "password": "pass123",
       "phoneNumber": "081295280339",
+      "image": "",
       "role": "user"
     },
     {
@@ -90,6 +131,7 @@
       "email": "admin@gmail.com",
       "password": "admin",
       "phoneNumber": "081295280667",
+      "image": "",
       "role": "admin"
     },
     {
@@ -99,6 +141,7 @@
       "email": "talita12@gmail.com",
       "password": "pass123",
       "phoneNumber": "081296745667",
+      "image": "",
       "role": "therapist"
     },
     {
@@ -107,6 +150,7 @@
       "email": "albietrisura@gmail.com",
       "password": "pass123",
       "phoneNumber": "087789098765",
+      "image": "",
       "role": "user",
       "id": 4
     }

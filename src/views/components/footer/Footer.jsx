@@ -157,7 +157,7 @@ class Footer extends React.Component {
             <ButtonCstm type="coral" className="mb-4">
               Submit
             </ButtonCstm>
-            <h6>Connect with Us</h6>
+            <h6 className="mb-2">Connect with Us</h6>
             <div className="d-flex ">
               <img
                 src={facebook}
@@ -189,7 +189,7 @@ class Footer extends React.Component {
 
         {/* Section 2 */}
         <div className="d-flex col-12 justify-content-center ">
-          <p style={{ fontSize: "15px", opacity: "0.8" }}>
+          <p style={{ fontSize: "15px", color: "#A1A1A8" }}>
             © 2020 Mom Story All Rights Reserved
           </p>
         </div>

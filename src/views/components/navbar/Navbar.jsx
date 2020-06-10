@@ -114,7 +114,10 @@ class NavbarCstm extends React.Component {
               className="d-flex"
               style={{ width: "100%", height: "15px", background: "#f4cc3c" }}
             ></div>
-            <Link className="d-flex justify-content-center align-items-center navbar-link navbar-sandy">
+            <Link
+              to="/therapist"
+              className="d-flex justify-content-center align-items-center navbar-link navbar-sandy"
+            >
               Therapist
             </Link>
           </div>
@@ -135,7 +138,10 @@ class NavbarCstm extends React.Component {
               className="d-flex"
               style={{ width: "100%", height: "15px", background: "#84c4d4" }}
             ></div>
-            <Link className="d-flex justify-content-center align-items-center navbar-link navbar-blue">
+            <Link
+              to="/school"
+              className="d-flex justify-content-center align-items-center navbar-link navbar-blue"
+            >
               School
             </Link>
           </div>

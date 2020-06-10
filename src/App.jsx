@@ -15,6 +15,7 @@ import Authentication from "./views/screens/auth/Authentication";
 import Cookie from "universal-cookie";
 import { connect } from "react-redux";
 import { keepLoginHandler, cookieChecker } from "./redux/actions/";
+import Therapist from "./views/screens/therapist/Therapist";
 
 const cookieObject = new Cookie();
 
@@ -32,26 +33,27 @@ class App extends React.Component {
   }
 
   render() {
-    if (this.props.user.cookieChecked) {
-      return (
-        <div>
-          <Navbar />
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/auth" component={Authentication} />
-            <Route exact path="/article" component={Article} />
-            <Route
-              exact
-              path="/readarticle/:articleId"
-              component={ArticleDetails}
-            />
-            <Route exact path="/school" component={School} />
-          </Switch>
-          <Footer />
-        </div>
-      );
-    }
-    return <h2>Loading...</h2>;
+    // if (this.props.user.cookieChecked) {
+    return (
+      <div>
+        <Navbar />
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/auth" component={Authentication} />
+          <Route exact path="/therapist" component={Therapist} />
+          <Route exact path="/article" component={Article} />
+          <Route
+            exact
+            path="/readarticle/:articleId"
+            component={ArticleDetails}
+          />
+          <Route exact path="/school" component={School} />
+        </Switch>
+        <Footer />
+      </div>
+    );
+    // }
+    // return <h2>Loading...</h2>;
   }
 }
 

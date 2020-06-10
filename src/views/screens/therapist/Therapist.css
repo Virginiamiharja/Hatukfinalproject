@@ -1,0 +1,9 @@
+:root {
+  --coral: #fc8454;
+  --sandy-brown: #f4cc3c;
+  --light-blue: #84c4d4;
+  --dark-green: #8ccc7c;
+}
+.therapist-body {
+  color: white !important;
+}
