@@ -5,69 +5,135 @@ import {
   faStethoscope,
   faHospital,
   faThumbsUp,
-  faPhone,
-  faBook,
 } from "@fortawesome/free-solid-svg-icons";
 import ButtonCstm from "../button/Button";
+import Axios from "axios";
+import { API_URL } from "../../../constants/API";
+import { Link } from "react-router-dom";
 
 class TherapistCard extends React.Component {
+  state = {
+    categories: [],
+  };
+
+  getTherapistCategories = () => {
+    const { id } = this.props.therapistdetails;
+    Axios.get(`${API_URL}/therapistcategories`, {
+      params: {
+        _expand: "category",
+        therapistdetailId: id,
+      },
+    })
+      .then((res) => {
+        console.log(res.data);
+        this.setState({ categories: res.data });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  renderTherapistCategories = () => {
+    return this.state.categories.map((value) => {
+      return <>{value.category.categoryName}&nbsp;</>;
+    });
+  };
+
+  componentDidMount() {
+    this.getTherapistCategories();
+  }
+
   render() {
+    const {
+      id,
+      user,
+      jobdesc,
+      clinic,
+      experience,
+      servicefee,
+    } = this.props.therapistdetails;
     return (
       <>
-        <div className="d-flex flex-row border col-12 mb-3 rounded p-3">
-          <div
-            className="d-flex border-right justify-content-center col-6 col-lg-3"
-            // style={{ borderRight: "1px solid #f4cc3c" }}
-          >
+        <div className="d-flex flex-row col-12 mb-3 p-3">
+          {/* Section 1 - Profile Image */}
+          <div className="d-flex flex-column justify-content-center align-items-center col-3">
             <img
-              src="https://engineering.unl.edu/images/staff/Kayla_Person-small.jpg"
+              src={user.image}
               className="rounded"
-              alt=""
-              style={{ width: "50%" }}
+              style={{ width: "95%" }}
             />
           </div>
-          <div
-            className="d-flex border-right flex-column col-6"
-            // style={{ borderRight: "1px solid #f4cc3c" }}
-          >
-            <h5 className="mb-1">Kayla Person, S.Psi</h5>
-            <div className="d-flex align-items-center">
-              <FontAwesomeIcon
-                icon={faStethoscope}
-                className="mr-2"
-                style={{ color: "#A1A1A8", fontSize: "14px" }}
-              />
-              <p style={{ color: "#A1A1A8", fontSize: "14px" }}>ADHD</p>
+          {/* Section 2 */}
+          <div className="flex-column col-8">
+            <h3 className="mb-0" style={{ color: "#fc8454" }}>
+              {user.name}
+            </h3>
+            <p className="mb-4" style={{ fontSize: "17px" }}>
+              {jobdesc}
+            </p>
+            {/* Experience */}
+            <div className="row flex-column flex-xl-row align-items-center">
+              <p
+                className="col-xl-3"
+                style={{ fontSize: "15px", fontWeight: "bold" }}
+              >
+                Experience
+              </p>
+              <p className="col-xl-9">{experience} years</p>
             </div>
-            <div className="d-flex align-items-center">
-              <FontAwesomeIcon
-                icon={faHospital}
-                className="mr-2"
-                style={{ color: "#A1A1A8", fontSize: "14px" }}
-              />
-              <p style={{ color: "#A1A1A8", fontSize: "14px" }}>
-                Miracle School Special Needs Education
+            {/* Clinic */}
+            <div className="row flex-column flex-xl-row align-items-center">
+              <p
+                className="col-xl-3"
+                style={{ fontSize: "15px", fontWeight: "bold" }}
+              >
+                Clinic
+              </p>
+              <p className="col-xl-9">{clinic.clinicName}</p>
+            </div>
+            {/* Specialty */}
+            <div className="row flex-column flex-xl-row align-items-center">
+              <p
+                className="col-xl-3"
+                style={{ fontSize: "15px", fontWeight: "bold" }}
+              >
+                Specialty
+              </p>
+              <p className="col-xl-9"> {this.renderTherapistCategories()}</p>
+            </div>
+            {/* Service Fee */}
+            <div className="row flex-column flex-xl-row align-items-center">
+              <p
+                className="col-xl-3"
+                style={{ fontSize: "15px", fontWeight: "bold" }}
+              >
+                Service Fee
+              </p>
+              <p className="col-xl-9">
+                {new Intl.NumberFormat("id-ID", {
+                  style: "currency",
+                  currency: "IDR",
+                }).format(servicefee)}
               </p>
             </div>
-          </div>
-          <div className="d-flex flex-column col-3">
-            <h5 className="mb-1">Rating</h5>
-            <div className="d-flex align-items-center mb-3">
-              <FontAwesomeIcon
-                icon={faThumbsUp}
-                className="mr-2"
-                style={{ color: "#84c4d4", fontSize: "14px" }}
-              />
-              <p style={{ color: "#A1A1A8", fontSize: "14px" }}>4.5</p>
+            {/* Rating */}
+            <div className="row flex-column flex-xl-row align-items-center mb-4">
+              <p
+                className="col-xl-3"
+                style={{ fontSize: "15px", fontWeight: "bold" }}
+              >
+                Rating
+              </p>
+              <p className="col-xl-9">4.0 (10 users)</p>
             </div>
-            <h6 className="mb-1">Service Fee</h6>
-            <p
-              style={{ color: "#fc8454", fontWeight: "bold" }}
-              className="mb-3"
-            >
-              Rp. 250.000
-            </p>
-            <ButtonCstm type="coral"> Book Service </ButtonCstm>
+            <div className="row justify-content-end col-10">
+              <Link
+                style={{ textDecoration: "none", color: "inherit" }}
+                to={`/therapistdetail/${id}`}
+              >
+                <ButtonCstm>Book Now</ButtonCstm>
+              </Link>
+            </div>
           </div>
         </div>
       </>

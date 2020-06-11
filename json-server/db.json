@@ -21,40 +21,6 @@
       "cityName": "Jakarta Pusat"
     }
   ],
-  "subdistricts": [
-    {
-      "id": 1,
-      "cityId": 1,
-      "subdisName": "Cilincing"
-    },
-    {
-      "id": 2,
-      "cityId": 1,
-      "subdisName": "Kelapa Gading"
-    },
-    {
-      "id": 3,
-      "cityId": 1,
-      "subdisName": "Tanjung Priok"
-    }
-  ],
-  "areas": [
-    {
-      "id": 1,
-      "subdistrictId": 3,
-      "areaName": "Sunter Agung"
-    },
-    {
-      "id": 2,
-      "subdistrictId": 3,
-      "areaName": "Sunter Jaya"
-    },
-    {
-      "id": 1,
-      "subdistrictId": 2,
-      "areaName": "Kelapa Gading Barat"
-    }
-  ],
   "categories": [
     {
       "id": 1,
@@ -122,7 +88,13 @@
       "password": "pass123",
       "phoneNumber": "081295280339",
       "image": "",
-      "role": "user"
+      "role": "user",
+      "cityId": 1,
+      "subdistrictId": "Kelapa Gading",
+      "areaId": "Kelapa Gading Barat",
+      "rt": "8",
+      "rw": "9",
+      "address": "Agung Utara 3C Blok A 28 No 20"
     },
     {
       "id": 2,
@@ -132,59 +104,195 @@
       "password": "admin",
       "phoneNumber": "081295280667",
       "image": "",
-      "role": "admin"
+      "role": "admin",
+      "cityId": 1,
+      "subdistrictId": "Kelapa Gading",
+      "areaId": "Kelapa Gading Barat",
+      "rt": "8",
+      "rw": "9",
+      "address": "Agung Utara 3C Blok A 28 No 20"
     },
     {
       "id": 3,
-      "name": "Talita Setyadi",
-      "username": "talitasetyadi",
-      "email": "talita12@gmail.com",
+      "name": "Helen Keller, S.Psi",
+      "username": "hellenkeller",
+      "email": "hellenkeller@gmail.com",
       "password": "pass123",
       "phoneNumber": "081296745667",
-      "image": "",
-      "role": "therapist"
+      "image": "https://engineering.unl.edu/images/staff/Kayla_Person-small.jpg",
+      "role": "therapist",
+      "cityId": 1,
+      "subdistrictId": "Kelapa Gading",
+      "areaId": "Kelapa Gading Barat",
+      "rt": "8",
+      "rw": "9",
+      "address": "Agung Utara 3C Blok A 28 No 20"
     },
     {
-      "name": "Albie Hanggara Trisura",
-      "username": "albietrisura",
-      "email": "albietrisura@gmail.com",
+      "id": 4,
+      "name": "Niels Paper, S.Psi",
+      "username": "nielspaper",
+      "email": "nielspaper@gmail.com",
       "password": "pass123",
       "phoneNumber": "087789098765",
-      "image": "",
-      "role": "user",
-      "id": 4
+      "image": "https://www.biography.com/.image/ar_8:10%2Cc_fill%2Ccs_srgb%2Cfl_progressive%2Cg_faces:center%2Cq_auto:good%2Cw_620/MTcyMzE0MzI2NTU0NjQ5ODEy/ang-lee-gettyimages-163118045.jpg",
+      "role": "therapist",
+      "cityId": 1,
+      "subdistrictId": "Kelapa Gading",
+      "areaId": "Kelapa Gading Barat",
+      "rt": "8",
+      "rw": "9",
+      "address": "Agung Utara 3C Blok A 28 No 20"
+    },
+    {
+      "id": 5,
+      "name": "Emily Jaury, S.Psi, M.Psi",
+      "username": "emilyjaury",
+      "email": "emilyjaury@gmail.com",
+      "password": "pass123",
+      "phoneNumber": "087789098765",
+      "image": "https://engineering.unl.edu/images/staff/Bonnie_Martin.jpg",
+      "role": "therapist",
+      "cityId": 1,
+      "subdistrictId": "Kelapa Gading",
+      "areaId": "Kelapa Gading Barat",
+      "rt": "8",
+      "rw": "9",
+      "address": "Agung Utara 3C Blok A 28 No 20"
     }
   ],
-  "address": [
+  "therapistdetails": [
     {
       "id": 1,
-      "userId": 1,
-      "cityId": 1,
-      "subdistrictId": 3,
-      "areaId": 1,
-      "address": "Agung Utara 3C Blok A 28 No 20",
-      "rt": "8",
-      "rw": "9"
-    },
-    {
-      "id": 2,
-      "userId": 2,
-      "cityId": 1,
-      "subdistrictId": 3,
-      "areaId": 1,
-      "address": "Agung Utara 3C Blok A 28 No 21",
-      "rt": "8",
-      "rw": "9"
-    },
-    {
-      "id": 2,
       "userId": 3,
-      "cityId": 1,
-      "subdistrictId": 3,
-      "areaId": 1,
-      "address": "Agung Utara 3D Blok A 30 No 32",
-      "rt": "8",
-      "rw": "9"
+      "jobdesc": "Psychologist",
+      "clinicId": 1,
+      "experience": 2,
+      "servicefee": 250000
+    },
+    {
+      "id": 2,
+      "userId": 4,
+      "jobdesc": "Neurology Consultant",
+      "clinicId": 2,
+      "experience": 3,
+      "servicefee": 300000
+    },
+    {
+      "id": 3,
+      "userId": 5,
+      "jobdesc": "Psychologist",
+      "clinicId": 1,
+      "experience": 5,
+      "servicefee": 175000
+    }
+  ],
+  "therapistcategories": [
+    {
+      "id": 1,
+      "therapistdetailId": 1,
+      "categoryId": 1
+    },
+    {
+      "id": 2,
+      "therapistdetailId": 1,
+      "categoryId": 2
+    },
+    {
+      "id": 3,
+      "therapistdetailId": 2,
+      "categoryId": 1
+    },
+    {
+      "id": 4,
+      "therapistdetailId": 2,
+      "categoryId": 2
+    },
+    {
+      "id": 5,
+      "therapistdetailId": 2,
+      "categoryId": 3
+    },
+    {
+      "id": 6,
+      "therapistdetailId": 3,
+      "categoryId": 1
+    },
+    {
+      "id": 7,
+      "therapistdetailId": 3,
+      "categoryId": 3
+    }
+  ],
+  "therapistratings": [
+    {
+      "id": 1,
+      "therapistdetailId": 1,
+      "rating": 4
+    },
+    {
+      "id": 2,
+      "therapistdetailId": 1,
+      "rating": 5
+    },
+    {
+      "id": 3,
+      "therapistdetailId": 2,
+      "rating": 3
+    },
+    {
+      "id": 4,
+      "therapistdetailId": 2,
+      "rating": 4
+    },
+    {
+      "id": 5,
+      "therapistdetailId": 2,
+      "rating": 2
+    },
+    {
+      "id": 6,
+      "therapistdetailId": 3,
+      "rating": 5
+    },
+    {
+      "id": 7,
+      "therapistdetailId": 3,
+      "rating": 4
+    }
+  ],
+  "therapistservices": [
+    {
+      "id": 1,
+      "therapistdetailId": 1,
+      "dayId": 1,
+      "workinghourId": 1,
+      "status": "idle"
+    },
+    {
+      "id": 2,
+      "therapistdetailId": 2,
+      "dayId": 2,
+      "workinghourId": 3,
+      "status": "idle"
+    },
+    {
+      "id": 3,
+      "therapistdetailId": 3,
+      "dayId": 4,
+      "workinghourId": 3,
+      "status": "idle"
+    }
+  ],
+
+  "clinics": [
+    {
+      "id": 1,
+      "clinicName": "Miracle School Special Needs Education"
+    },
+    {
+      "id": 2,
+      "clinicName": "Talitakum School and Therapy"
     }
   ],
   "articles": [
@@ -197,30 +305,36 @@
       "userId": 2
     }
   ],
-  "articleCategories": [
+  "articlecategories": [
     {
+      "id": 1,
       "articleId": 1,
       "categoryId": 1
     },
     {
+      "id": 2,
       "articleId": 1,
       "categoryId": 2
     },
     {
+      "id": 3,
       "articleId": 1,
       "categoryId": 3
     }
   ],
-  "haveSeenArticles": [
+  "haveseenarticles": [
     {
+      "id": 1,
       "articleId": 1,
       "userId": 1
     },
     {
+      "id": 2,
       "articleId": 1,
       "userId": 2
     },
     {
+      "id": 3,
       "articleId": 1,
       "userId": 3
     }

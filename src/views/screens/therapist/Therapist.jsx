@@ -11,6 +11,7 @@ class Therapist extends React.Component {
     cities: [],
     days: [],
     hours: [],
+    therapistdetails: [],
     value: "",
   };
 
@@ -80,10 +81,32 @@ class Therapist extends React.Component {
     });
   };
 
+  getTherapistDetails = () => {
+    Axios.get(`${API_URL}/therapistdetails?_expand=user&_expand=clinic`, {
+      params: {
+        _embed: "therapistcategories",
+      },
+    })
+      .then((res) => {
+        console.log(res.data);
+        this.setState({ therapistdetails: res.data });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  renderTherapistCard = () => {
+    return this.state.therapistdetails.map((value) => {
+      return <TherapistCard therapistdetails={value} />;
+    });
+  };
+
   componentDidMount() {
     this.getCities();
     this.getDays();
     this.getHours();
+    this.getTherapistDetails();
   }
 
   render() {
@@ -158,8 +181,8 @@ class Therapist extends React.Component {
               </Col>
             </FormGroup>
             {/* Content */}
-            <div className="d-flex flex-wrap">
-              <TherapistCard />
+            <div className="d-flex flex-wrap align-items-around justify-content-around">
+              {this.renderTherapistCard()}
             </div>
           </div>
         </div>

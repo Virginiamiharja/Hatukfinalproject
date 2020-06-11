@@ -16,6 +16,7 @@ import Cookie from "universal-cookie";
 import { connect } from "react-redux";
 import { keepLoginHandler, cookieChecker } from "./redux/actions/";
 import Therapist from "./views/screens/therapist/Therapist";
+import TherapistDetail from "./views/screens/therapist/TherapistDetail";
 
 const cookieObject = new Cookie();
 
@@ -41,6 +42,11 @@ class App extends React.Component {
           <Route exact path="/" component={Home} />
           <Route exact path="/auth" component={Authentication} />
           <Route exact path="/therapist" component={Therapist} />
+          <Route
+            exact
+            path="/therapistdetail/:id"
+            component={TherapistDetail}
+          />
           <Route exact path="/article" component={Article} />
           <Route
             exact
