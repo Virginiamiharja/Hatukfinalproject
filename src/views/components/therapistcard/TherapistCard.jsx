@@ -17,7 +17,7 @@ class TherapistCard extends React.Component {
   };
 
   getTherapistCategories = () => {
-    const { id } = this.props.therapistdetails;
+    const { id } = this.props.therapistDetails;
     Axios.get(`${API_URL}/therapistcategories`, {
       params: {
         _expand: "category",
@@ -51,7 +51,7 @@ class TherapistCard extends React.Component {
       clinic,
       experience,
       servicefee,
-    } = this.props.therapistdetails;
+    } = this.props.therapistDetails;
     return (
       <>
         <div className="d-flex flex-row col-12 mb-3 p-3">

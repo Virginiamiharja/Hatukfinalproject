@@ -11,7 +11,7 @@ class Therapist extends React.Component {
     cities: [],
     days: [],
     hours: [],
-    therapistdetails: [],
+    therapistDetails: [],
     value: "",
   };
 
@@ -89,7 +89,7 @@ class Therapist extends React.Component {
     })
       .then((res) => {
         console.log(res.data);
-        this.setState({ therapistdetails: res.data });
+        this.setState({ therapistDetails: res.data });
       })
       .catch((err) => {
         console.log(err);
@@ -97,8 +97,8 @@ class Therapist extends React.Component {
   };
 
   renderTherapistCard = () => {
-    return this.state.therapistdetails.map((value) => {
-      return <TherapistCard therapistdetails={value} />;
+    return this.state.therapistDetails.map((value) => {
+      return <TherapistCard therapistDetails={value} />;
     });
   };
 
@@ -150,7 +150,7 @@ class Therapist extends React.Component {
           {/* Filter and Content */}
           <div className="d-flex flex-column col-9">
             {/* Filter */}
-            {/* Filter 2 - Days */}
+            {/* Filter 2 */}
             <FormGroup className="align-items-center border" row>
               {/* Filter 2 - Days */}
               <Col sm={4}>

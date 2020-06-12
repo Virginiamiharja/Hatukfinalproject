@@ -168,7 +168,8 @@
       "jobdesc": "Psychologist",
       "clinicId": 1,
       "experience": 2,
-      "servicefee": 250000
+      "servicefee": 250000,
+      "about": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait."
     },
     {
       "id": 2,
@@ -176,7 +177,8 @@
       "jobdesc": "Neurology Consultant",
       "clinicId": 2,
       "experience": 3,
-      "servicefee": 300000
+      "servicefee": 300000,
+      "about": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait."
     },
     {
       "id": 3,
@@ -184,7 +186,8 @@
       "jobdesc": "Psychologist",
       "clinicId": 1,
       "experience": 5,
-      "servicefee": 175000
+      "servicefee": 175000,
+      "about": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait."
     }
   ],
   "therapistcategories": [
@@ -282,6 +285,32 @@
       "dayId": 4,
       "workinghourId": 3,
       "status": "idle"
+    }
+  ],
+  "therapistreviews": [
+    {
+      "id": 1,
+      "userId": 1,
+      "therapistdetailId": 1,
+      "reviewdate": "12/6/2020",
+      "rating": 5,
+      "comment": " This was my first visit, and the entire experience was excellent - prompt, efficient, and very professional"
+    },
+    {
+      "id": 1,
+      "userId": 2,
+      "therapistdetailId": 1,
+      "reviewdate": "12/6/2020",
+      "rating": 4,
+      "comment": " This was my first visit, and the entire experience was excellent - prompt, efficient, and very professional"
+    },
+    {
+      "id": 1,
+      "userId": 1,
+      "therapistdetailId": 1,
+      "reviewdate": "12/6/2020",
+      "rating": 5,
+      "comment": " This was my first visit, and the entire experience was excellent - prompt, efficient, and very professional"
     }
   ],
 
