@@ -29,6 +29,8 @@ class Therapist extends React.Component {
     searchInput: "",
     dayFilter: "",
     specialtyFilter: "",
+    offset: 0,
+    type: "",
   };
 
   // Sorting dari front end
@@ -52,7 +54,8 @@ class Therapist extends React.Component {
   // Sorting dari back end
   changeSort = (event) => {
     const { value } = event.target;
-    this.getTherapistDetails(value);
+    this.setState({ type: value });
+    this.getTherapistDetails(this.state.offset, value);
   };
 
   changeDay = (event) => {
@@ -129,10 +132,11 @@ class Therapist extends React.Component {
     });
   };
 
-  getTherapistDetails = (sortType = "") => {
+  getTherapistDetails = (offset = 0, sortType = "") => {
     Axios.get(`${API_URL1}/therapistdetails`, {
       params: {
         sortType,
+        offset: offset,
       },
     })
       .then((res) => {
@@ -167,6 +171,43 @@ class Therapist extends React.Component {
     this.getTherapistDetails();
   }
 
+  renderPagination = () => {
+    return (
+      <div className="d-flex p-0 mt-4 flex-wrap justify-content-between">
+        <div className="d-flex p-0" onClick={() => this.pagination("prev")}>
+          {/* {this.state.offset == 0 ? null : ( */}
+          <FontAwesomeIcon
+            icon={faArrowAltCircleLeft}
+            style={{ color: "#fc8454", fontSize: "35px" }}
+          />
+          {/* )} */}
+        </div>
+        <div className="d-flex p-0" onClick={() => this.pagination("next")}>
+          {/* Masih bingung nih validasinya */}
+          {/* Karena kita limitnya 2 makanya dikali 2 */}
+          {/* {this.state.offset * 2 < this.state.therapistDetail.reviews.length ? ( */}
+          <FontAwesomeIcon
+            icon={faArrowAltCircleRight}
+            style={{ color: "#fc8454", fontSize: "35px" }}
+          />
+          {/* ) : null} */}
+        </div>
+      </div>
+    );
+  };
+
+  pagination = (type) => {
+    let offset = this.state.offset;
+    if (type == "next") {
+      offset += 3;
+      this.setState({ offset: offset });
+    } else if (type == "prev") {
+      offset -= 3;
+      this.setState({ offset: offset });
+    }
+    this.getTherapistDetails(offset, this.state.type);
+  };
+
   render() {
     return (
       <>
@@ -200,7 +241,7 @@ class Therapist extends React.Component {
         {/* Section 2 */}
         <div className="d-flex justify-content-center col-12 p-4">
           {/* Filter 1 */}
-          <div className="col-3 mr-4 border">
+          <div className="col-3 mr-4">
             {/* By Specialty */}
             <div className="d-flex flex-column">
               <h5 className="mb-3 border-bottom pt-0 pr-3 pb-3 col-10  d-flex">
@@ -309,20 +350,7 @@ class Therapist extends React.Component {
             </div>
 
             {/* Pagination */}
-            <div className="d-flex p-0 mt-4 flex-wrap justify-content-between">
-              <div className="d-flex p-0">
-                <FontAwesomeIcon
-                  icon={faArrowAltCircleLeft}
-                  style={{ color: "#fc8454", fontSize: "40px" }}
-                />
-              </div>
-              <div className="d-flex p-0">
-                <FontAwesomeIcon
-                  icon={faArrowAltCircleRight}
-                  style={{ color: "#fc8454", fontSize: "40px" }}
-                />
-              </div>
-            </div>
+            {this.renderPagination()}
           </div>
         </div>
       </>

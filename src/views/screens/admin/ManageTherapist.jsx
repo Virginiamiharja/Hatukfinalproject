@@ -23,6 +23,9 @@ import {
   faStethoscope,
   faHospital,
   faEye,
+  faUpload,
+  faArrowAltCircleLeft,
+  faArrowAltCircleRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { Table } from "reactstrap";
 import { priceFormatter } from "../../../supports/helpers/formatter";
@@ -32,12 +35,16 @@ import { connect } from "react-redux";
 import { getCities } from "../../../redux/actions";
 import ButtonCstm from "../../components/button/Button";
 import { Link } from "react-router-dom";
+import SideBar from "../../components/sidebar/SideBar";
+import { Modal, ModalBody } from "reactstrap";
+import swal from "sweetalert";
 
 class ManageTherapist extends React.Component {
   state = {
     therapistDetails: [],
     // User account for therapist
     registrationForm: {
+      id: 0,
       name: "",
       username: "",
       email: "",
@@ -83,7 +90,7 @@ class ManageTherapist extends React.Component {
     // specialty data
     specialtyData: {
       therapistDetailId: 0,
-      specialtyId: 0,
+      id: 0,
     },
 
     // woking hour data
@@ -93,6 +100,10 @@ class ManageTherapist extends React.Component {
       dayId: 0,
     },
 
+    offset: 0,
+    addForm: false,
+    editForm: false,
+    formOpen: false,
     specialties: [],
     clinics: [],
     hours: [],
@@ -102,9 +113,55 @@ class ManageTherapist extends React.Component {
     arrSpecialtyData: [],
     showPassword: false,
     searchInput: "",
+    arrTemp: [],
   };
 
-  // Untuk ganti2 state
+  renderTherapist = () => {
+    return this.state.therapistDetails.map((value, index) => {
+      if (
+        value.user.name
+          .toLowerCase()
+          .includes(this.state.searchInput.toLowerCase())
+      )
+        return (
+          <>
+            <tr>
+              <td scope="row">{index + 1}</td>
+              <td>{value.user.name}</td>
+              <td>{value.clinic.clinicName}</td>
+              <td>{value.jobdesc}</td>
+              <td>{priceFormatter(value.serviceFee)}</td>
+              <td>
+                <ButtonCstm onClick={() => this.editHandler(index)}>
+                  Detail
+                </ButtonCstm>
+              </td>
+            </tr>
+          </>
+        );
+    });
+  };
+
+  editHandler = (index) => {
+    this.setState({
+      registrationForm: { ...this.state.therapistDetails[index].user },
+      therapistForm: { ...this.state.therapistDetails[index] },
+      arrSpecialtyData: [...this.state.therapistDetails[index].specialties],
+      arrTemp: [
+        ...this.state.therapistDetails[index].therapistServiceSchedules,
+      ],
+      editForm: !this.state.editForm,
+    });
+    console.log(
+      this.state.therapistDetails[index].therapistServiceSchedules.length
+    );
+    console.log(this.state.arrWorkingHour);
+  };
+
+  toggleModal = (type) => {
+    this.setState({ [type]: !this.state[type] });
+  };
+
   inputTextHandler = (event, form, field, index) => {
     const { value } = event.target;
     // if (index < 0) {
@@ -113,86 +170,42 @@ class ManageTherapist extends React.Component {
     // }
   };
 
-  fileChangeHandler = (e) => {
-    this.setState({
-      registrationForm: {
-        ...this.state.registrationForm,
-        image: e.target.files[0],
-      },
-    });
-  };
-
-  changeCity = (event) => {
-    // const { value } = event.target;
-    // this.setState({ cityId: value });
-    const { value } = event.target;
-    this.setState({
-      registrationForm: {
-        ...this.state.registrationForm,
-        city: { ...this.state.registrationForm.city, id: value },
-      },
-    });
-  };
-
-  changeClinic = (event) => {
-    // const { value } = event.target;
-    // this.setState({ cityId: value });
-    const { value } = event.target;
-    this.setState({
-      therapistForm: {
-        ...this.state.therapistForm,
-        clinic: { ...this.state.therapistForm.clinic, id: value },
-      },
-    });
-  };
-
   showPassword = () => {
     this.setState({ showPassword: !this.state.showPassword });
   };
 
-  fungsiCoba = (event, index) => {
-    const { value } = event.target;
-    let arrNew = this.state.arrSpecialtyData;
-
-    console.log(arrNew);
-    arrNew[index].specialtyId = value;
-    console.log(arrNew);
-
-    this.setState({ arrSpecialtyData: arrNew });
-  };
-
-  fungsiCoba1 = (event, index) => {
-    const { value } = event.target;
-    let arrNew = this.state.arrWorkingHour;
-
-    console.log(arrNew);
-    arrNew[index].hourId = value;
-    console.log(arrNew);
-
-    this.setState({ arrWokingHour: arrNew });
-  };
-
-  fungsiCoba2 = (event, index) => {
-    const { value } = event.target;
-    let arrNew = this.state.arrWorkingHour;
-
-    console.log(arrNew);
-    arrNew[index].dayId = value;
-    console.log(arrNew);
-
-    this.setState({ arrWokingHour: arrNew });
-  };
-  //
-
-  // Keperluan form
-  renderCities = () => {
-    return this.props.city.city.map((value) => {
-      return (
-        <>
-          <option value={value.id}>{value.cityName}</option>
-        </>
-      );
-    });
+  addForm = (type, form) => {
+    let arrSpecialtyData = this.state.arrSpecialtyData;
+    let arrWokingHour = this.state.arrWorkingHour;
+    if (form == "specialty") {
+      if (type == "next") {
+        this.setState({
+          arrSpecialtyData: [
+            ...this.state.arrSpecialtyData,
+            { ...this.state.specialtyData },
+          ],
+        });
+      } else if (type == "prev") {
+        arrSpecialtyData.pop();
+        this.setState({
+          arrSpecialtyData: arrSpecialtyData,
+        });
+      }
+    } else if (form == "hour") {
+      if (type == "next") {
+        this.setState({
+          arrWorkingHour: [
+            ...this.state.arrWorkingHour,
+            { ...this.state.workingHour },
+          ],
+        });
+      } else if (type == "prev") {
+        arrWokingHour.pop();
+        this.setState({
+          arrWorkingHour: arrWokingHour,
+        });
+      }
+    }
   };
 
   renderSpecialtyForm = () => {
@@ -205,29 +218,31 @@ class ManageTherapist extends React.Component {
             id="exampleSelect"
             placeholder="Clinic"
             className="mb-3"
+            style={{ width: "95%" }}
             value={this.state.arrSpecialtyData[index].id}
-            // onChange={(e) => {
-            //   this.inputTextHandler(e, index);
-            // }}
-            onChange={(e) => this.fungsiCoba(e, index)}
+            // Ini cuma berlaku di add doang
+            onChange={(e) => this.changeArrform(e, index, "specialty")}
           >
             <option>Choose Specialty..</option>
             {this.renderSpecialties()}
           </Input>
+        </>
+      );
+    });
+  };
 
+  renderScheduleForm = () => {
+    return this.state.arrWorkingHour.map((value, index) => {
+      return (
+        <div className="d-flex p-0 justify-content-between">
           <Input
             type="select"
             name="select"
             id="exampleSelect"
-            placeholder="Clinic"
-            className="mb-3"
-            // value={this.state.arrWorkingHour[index].day.id}
-            // onChange={(e) => {
-            //   this.inputTextHandler(e, index);
-            // }}
-            onChange={(e) => this.fungsiCoba2(e, index)}
+            className="mr-2"
+            onChange={(e) => this.changeArrform(e, index, "day")}
           >
-            <option>Choose Hari..</option>
+            <option>Day</option>
             {this.renderDays()}
           </Input>
 
@@ -237,26 +252,160 @@ class ManageTherapist extends React.Component {
             id="exampleSelect"
             placeholder="Clinic"
             className="mb-3"
-            // value={this.state.arrWorkingHour[index].day.id}
-            // onChange={(e) => {
-            //   this.inputTextHandler(e, index);
-            // }}
-            onChange={(e) => this.fungsiCoba1(e, index)}
+            onChange={(e) => this.changeArrform(e, index, "hour")}
           >
-            <option>Choose Jam ..</option>
+            <option>Time</option>
             {this.renderHours()}
           </Input>
+        </div>
+      );
+    });
+  };
+
+  fileChangeHandler = (e) => {
+    this.setState({
+      registrationForm: {
+        ...this.state.registrationForm,
+        image: e.target.files[0],
+      },
+    });
+  };
+
+  changeHandler = (event, field, form) => {
+    const { value } = event.target;
+    this.setState({
+      [form]: {
+        ...this.state[form],
+        [field]: { ...this.state[form][field], id: value },
+      },
+    });
+  };
+
+  getTherapistDetails = (sortType = "") => {
+    Axios.get(`${API_URL1}/therapistdetails`, {
+      params: {
+        sortType,
+        offset: 0,
+      },
+    })
+      .then((res) => {
+        console.log(res.data);
+        this.setState({ therapistDetails: res.data });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  SearchTherapist = (event) => {
+    const { value } = event.target;
+    this.setState({ searchInput: value });
+  };
+
+  changeArrform = (event, index, type) => {
+    const { value } = event.target;
+    let arrNew;
+
+    if (type == "specialty") {
+      arrNew = this.state.arrSpecialtyData;
+      arrNew[index].id = value;
+      this.setState({ arrSpecialtyData: arrNew });
+    } else if (type == "hour") {
+      arrNew = this.state.arrWorkingHour;
+      arrNew[index].hourId = value;
+      this.setState({ arrWokingHour: arrNew });
+    } else if (type == "day") {
+      arrNew = this.state.arrWorkingHour;
+      arrNew[index].dayId = value;
+      this.setState({ arrWokingHour: arrNew });
+    }
+  };
+
+  renderPagination = () => {
+    return (
+      <div className="d-flex p-0 mt-4 flex-wrap justify-content-between">
+        <div className="d-flex p-0" onClick={() => this.pagination("prev")}>
+          {/* {this.state.offset == 0 ? null : ( */}
+          <FontAwesomeIcon
+            icon={faArrowAltCircleLeft}
+            style={{ color: "#fc8454", fontSize: "35px" }}
+          />
+          {/* )} */}
+        </div>
+        <div className="d-flex p-0" onClick={() => this.pagination("next")}>
+          {/* Masih bingung nih validasinya */}
+          {/* Karena kita limitnya 2 makanya dikali 2 */}
+          {/* {this.state.offset * 2 < this.state.therapistDetail.reviews.length ? ( */}
+          <FontAwesomeIcon
+            icon={faArrowAltCircleRight}
+            style={{ color: "#fc8454", fontSize: "35px" }}
+          />
+          {/* ) : null} */}
+        </div>
+      </div>
+    );
+  };
+
+  pagination = (type) => {
+    let offset = this.state.offset;
+    if (type == "next") {
+      offset += 5;
+      this.setState({ offset: offset });
+    } else if (type == "prev") {
+      offset -= 5;
+      this.setState({ offset: offset });
+    }
+    // this.getTransaction(offset);
+  };
+
+  renderSchedule = () => {
+    return this.state.arrTemp.map((value, index) => {
+      return (
+        <>
+          <tr>
+            <td scope="row">{index + 1}</td>
+            <td>{value.day.dayName}</td>
+            <td>{value.hour.hour}</td>
+          </tr>
         </>
       );
     });
   };
 
-  renderSpecialtyData = () => {
-    return this.state.arrWorkingHour.map((value) => {
+  showAdd = () => {
+    this.setState({
+      registrationForm: {
+        ...this.state.registrationForm,
+        id: 0,
+        name: "",
+        username: "",
+        email: "",
+        password: "",
+        phoneNumber: "",
+        city: {
+          id: 0,
+          cityName: "",
+        },
+        image: null,
+        role: "therapist",
+        subdistrict: "",
+        area: "",
+        address: "",
+        rt: "",
+        rw: "",
+      },
+    });
+
+    this.setState({ addForm: !this.state.addForm });
+  };
+  //
+
+  // Keperluan form
+  renderCities = () => {
+    return this.props.city.city.map((value) => {
       return (
         <>
-          <p>ini jam :{value.hourId}</p>
-          <p>ini hari :{value.dayId}</p>
+          <option value={value.id}>{value.cityName}</option>
         </>
       );
     });
@@ -329,6 +478,28 @@ class ManageTherapist extends React.Component {
       return <option value={value.id}>{value.hour}</option>;
     });
   };
+
+  // Ini harusnya dibikin di redux karena dipake di user profile dan disini
+  uploadPicture = () => {
+    const { image } = this.state.registrationForm;
+    let profilePicture = new FormData();
+    profilePicture.append("profilePicture", image);
+
+    Axios.put(`${API_URL1}/users/editprofilepicture`, profilePicture, {
+      params: {
+        userId: this.state.registrationForm.id,
+      },
+    })
+      .then((res) => {
+        console.log(res.data);
+        swal("CONGRATS!", "Your image has been uploaded", "success");
+        this.setState({ formOpen: !this.state.formOpen });
+      })
+      .catch((err) => {
+        console.log(err);
+        swal("OH NO!", "The image can't be uploaded", "error");
+      });
+  };
   //
 
   // Button save
@@ -341,40 +512,14 @@ class ManageTherapist extends React.Component {
       jobdesc,
       serviceFee,
     } = this.state.therapistForm;
-    const {
-      name,
-      username,
-      email,
-      password,
-      phoneNumber,
-      image,
-      role,
-      subdistrict,
-      area,
-      address,
-      rt,
-      rw,
-    } = this.state.registrationForm;
-    let registrationForm = {
-      name,
-      username,
-      email,
-      image,
-      password,
-      phoneNumber,
-      role,
-      subdistrict,
-      area,
-      address,
-      rt,
-      rw,
-    };
+    const { image } = this.state.registrationForm;
+
     let therapistForm = { id, about, experience, jobdesc, serviceFee };
     let formRegister = new FormData();
 
     formRegister.append(
       "registerForm",
-      JSON.stringify({ ...registrationForm, image: null })
+      JSON.stringify({ ...this.state.registrationForm, image: null })
     );
     formRegister.append("profilePicture", image);
 
@@ -398,27 +543,6 @@ class ManageTherapist extends React.Component {
         )
           .then((res) => {
             console.log(res.data);
-            // Abis daftar terapis langsung masukin spesialisasinya
-            return this.state.arrSpecialtyData.map((value, index) => {
-              // ?therapistDetailId=1&specialtyId=${value.specialtyId}
-              Axios.get(
-                `${API_URL1}/therapistdetails/addtherapistspecialty`,
-                // Gangerti kenapa kalo pake params ini harus pake method get kl put sama post gabisa
-                {
-                  params: {
-                    therapistDetailId: res.data.id,
-                    specialtyId: value.specialtyId,
-                  },
-                }
-              )
-                .then((res) => {
-                  console.log(res.data);
-                })
-                .catch((err) => {
-                  console.log(err);
-                });
-            });
-
             // Abis daftar terapis langsung masukin workinghournya
             return this.state.arrWorkingHour.map((value, index) => {
               // ?therapistDetailId=1&specialtyId=${value.specialtyId}
@@ -440,25 +564,42 @@ class ManageTherapist extends React.Component {
                   console.log(err);
                 });
             });
+
+            // Abis daftar terapis langsung masukin spesialisasinya
+            return this.state.arrSpecialtyData.map((value, index) => {
+              // ?therapistDetailId=1&specialtyId=${value.specialtyId}
+              Axios.get(
+                `${API_URL1}/therapistdetails/addtherapistspecialty`,
+                // Gangerti kenapa kalo pake params ini harus pake method get kl put sama post gabisa
+                {
+                  params: {
+                    therapistDetailId: res.data.id,
+                    specialtyId: value.specialtyId,
+                  },
+                }
+              )
+                .then((res) => {
+                  console.log(res.data);
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            });
           })
           .catch((err) => {
             console.log(err);
           });
+        // Buat ngerefresh
+        this.getTherapistDetails();
+        this.setState({ addForm: !this.state.addForm });
+        swal("CONGRATS", "The data has been updated", "success");
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
-  editHandler = (index) => {
-    this.setState({
-      registrationForm: { ...this.state.therapistDetails[index].user },
-      therapistForm: { ...this.state.therapistDetails[index] },
-      arrSpecialtyData: [...this.state.therapistDetails[index].specialties],
-    });
-    console.log(this.state.arrSpecialtyData);
-  };
-
+  // Belum bisa edit schedule
   saveEdit = () => {
     Axios.put(
       `${API_URL1}/users/edituserprofile`,
@@ -495,13 +636,10 @@ class ManageTherapist extends React.Component {
             )
               .then((res) => {
                 console.log(res.data);
-                // Kenapa ini beda fungsi, karena paramsnya beda, biar ga pusing nanti pisahin aja tapi bikin validasi
                 // Abis update terapis langsung masukin spesialisasinya yang baru
                 return this.state.arrSpecialtyData.map((value, index) => {
-                  // ?therapistDetailId=1&specialtyId=${value.specialtyId}
                   Axios.get(
                     `${API_URL1}/therapistdetails/addtherapistspecialty`,
-                    // Gangerti kenapa kalo pake params ini harus pake method get kl put sama post gabisa
                     {
                       params: {
                         therapistDetailId: res.data.id,
@@ -524,160 +662,31 @@ class ManageTherapist extends React.Component {
           .catch((err) => {
             console.log(err);
           });
+        // Buat ngerefresh
+        this.getTherapistDetails();
+        this.setState({ editForm: !this.state.editForm });
+        swal("CONGRATS", "The data has been updated", "success");
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
-  saveEditTherapist = () => {
-    Axios.put(
-      `${API_URL1}/therapistdetails/edittherapist`,
-      this.state.therapistForm,
-      {
-        params: {
-          clinicId: this.state.therapistForm.clinic.id,
-        },
-      }
-    )
-      .then((res) => console.log(res.data))
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  addForm = (type) => {
-    let arrSpecialtyData = this.state.arrSpecialtyData;
-    let arrWokingHour = this.state.arrWorkingHour;
-    if (type == "next") {
-      this.setState({
-        arrSpecialtyData: [
-          ...this.state.arrSpecialtyData,
-          { ...this.state.specialtyData },
-        ],
-        arrWorkingHour: [
-          ...this.state.arrWorkingHour,
-          { ...this.state.workingHour },
-        ],
-      });
-    } else if (type == "prev") {
-      arrSpecialtyData.pop();
-      arrWokingHour.pop();
-      this.setState({
-        arrSpecialtyData: arrSpecialtyData,
-        arrWorkingHour: arrWokingHour,
-      });
-    }
-  };
-  //
-
-  getTherapistDetails = (sortType = "") => {
-    Axios.get(`${API_URL1}/therapistdetails`, {
+  // Masih ada salah di back endnya
+  deleteTherapist = () => {
+    Axios.delete(`${API_URL1}/therapistdetails/deletetherapist`, {
       params: {
-        sortType,
+        therapistId: this.state.therapistForm.id,
       },
     })
       .then((res) => {
         console.log(res.data);
-        this.setState({ therapistDetails: res.data });
+        swal("CONGRATS", "The data has been deleted", "success");
+        this.getTherapistDetails();
       })
       .catch((err) => {
         console.log(err);
       });
-  };
-
-  SearchTherapist = (event) => {
-    const { value } = event.target;
-    this.setState({ searchInput: value });
-  };
-
-  renderTherapistSpecialties = (index) => {
-    return this.state.therapistDetails[index].specialties.map((value) => {
-      return <>{value.specialtyName}&nbsp;</>;
-    });
-  };
-
-  renderTherapist = () => {
-    return this.state.therapistDetails.map((value, index) => {
-      if (
-        value.user.name
-          .toLowerCase()
-          .includes(this.state.searchInput.toLowerCase())
-      )
-        return (
-          <>
-            <tr>
-              <td scope="row">{index + 1}</td>
-              <td style={{ color: "#84c4d4" }}>{value.user.name}</td>
-              <td>{value.clinic.clinicName}</td>
-              <td style={{ color: "#84c4d4" }}>{value.jobdesc}</td>
-              <td>{priceFormatter(value.serviceFee)}</td>
-              <td>
-                <ButtonCstm onClick={() => this.editHandler(index)}>
-                  Edit
-                </ButtonCstm>
-              </td>
-              <td>
-                <ButtonCstm onClick={() => this.deleteHandler(value.id)}>
-                  Delete
-                </ButtonCstm>
-              </td>
-            </tr>
-            <tr>
-              <td colSpan={5} className="">
-                <div className="d-flex p-2 col-12">
-                  <div className="d-flex flex-column justify-content-center align-items-center col-3">
-                    <img
-                      src={value.user.image}
-                      className="rounded-circle"
-                      style={{ width: "70%" }}
-                    />
-                  </div>
-
-                  <div className="flex-column col-12 col-lg-5">
-                    <h4 className="mb-0" style={{ color: "#fc8454" }}>
-                      {value.user.name}
-                    </h4>
-                    <p className="mb-3" style={{ fontSize: "17px" }}>
-                      {value.jobdesc}
-                    </p>
-
-                    <div className="d-flex mb-1 flex-column flex-xl-row align-items-center">
-                      <FontAwesomeIcon
-                        icon={faHospital}
-                        style={{ fontSize: "15px", color: "#84c4d4" }}
-                      />
-                      <p className="ml-2" style={{ fontSize: "13px" }}>
-                        {value.clinic.clinicName}
-                      </p>
-                    </div>
-
-                    <div className="d-flex flex-column flex-xl-row align-items-center">
-                      <FontAwesomeIcon
-                        icon={faStethoscope}
-                        style={{ fontSize: "15px", color: "#84c4d4" }}
-                      />
-                      <p className="ml-2" style={{ fontSize: "13px" }}>
-                        {this.renderTherapistSpecialties(index)}
-                      </p>
-                    </div>
-
-                    <div className="d-flex flex-column flex-xl-row align-items-center">
-                      <FontAwesomeIcon
-                        icon={faStar}
-                        style={{ fontSize: "15px", color: "#84c4d4" }}
-                      />
-                      <p className="ml-2" style={{ fontSize: "13px" }}>
-                        {this.renderTherapistSpecialties(index)}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </td>
-            </tr>
-          </>
-        );
-    });
   };
 
   componentDidMount() {
@@ -692,271 +701,96 @@ class ManageTherapist extends React.Component {
   render() {
     return (
       <>
-        {/* Form gajelas */}
-        <Form className="d-flex flex-column justify-content-center align-items-center mt-2">
-          <Input
-            type="text"
-            placeholder="Full Name"
-            value={this.state.registrationForm.name}
-            className="mb-3"
-            onChange={(e) => {
-              this.inputTextHandler(e, "registrationForm", "name");
-            }}
-          />
-          <Input
-            type="text"
-            placeholder="Username"
-            value={this.state.registrationForm.username}
-            className="mb-3"
-            onChange={(e) => {
-              this.inputTextHandler(e, "registrationForm", "username");
-            }}
-          />
-          <Row form>
-            <Col md={6}>
-              <FormGroup>
-                <Input
-                  type="email"
-                  placeholder="Email"
-                  value={this.state.registrationForm.email}
-                  className="mb-3"
-                  onChange={(e) => {
-                    this.inputTextHandler(e, "registrationForm", "email");
-                  }}
-                />
-              </FormGroup>
-            </Col>
-            <Col md={6}>
-              <FormGroup>
-                <InputGroup className="mb-3">
-                  <Input
-                    placeholder="Password"
-                    type={this.state.showPassword ? "text" : "password"}
-                    onChange={(e) => {
-                      this.inputTextHandler(e, "registrationForm", "password");
-                    }}
-                  />
-                  <InputGroupAddon addonType="append">
-                    <InputGroupAddon addonType="prepend">
-                      <InputGroupText
-                        style={{ background: "#84c4d4", border: "white" }}
-                        onClick={() => {
-                          this.showPassword();
-                        }}
-                      >
-                        <FontAwesomeIcon
-                          icon={faEye}
-                          style={{ color: "white" }}
-                        />
-                      </InputGroupText>
-                    </InputGroupAddon>
-                  </InputGroupAddon>
-                </InputGroup>
-              </FormGroup>
-            </Col>
-          </Row>
-          <Input
-            type="text"
-            placeholder="Phone Number"
-            value={this.state.registrationForm.phoneNumber}
-            className="mb-3"
-            onChange={(e) => {
-              this.inputTextHandler(e, "registrationForm", "phoneNumber");
-            }}
-          />
-          <FormGroup className="w-100">
-            <Input
-              type="file"
-              name="file"
-              id="exampleFile"
-              onChange={this.fileChangeHandler}
-            />
-            <FormText color="muted">Upload profile picture</FormText>
-          </FormGroup>
-        </Form>
-
-        {/* Section 2 */}
-        <Form
-          className="d-flex flex-column justify-content-center align-items-center"
-          // style={{ marginTop: "21px" }}
-        >
-          <Input
-            type="select"
-            name="select"
-            id="exampleSelect"
-            placeholder="City"
-            value={this.state.registrationForm.city.id}
-            className="mb-3"
-            onChange={(e) => {
-              this.changeCity(e);
-            }}
-          >
-            <option>Choose City..</option>
-            {this.renderCities()}
-          </Input>
-          <Input
-            type="text"
-            placeholder="Subdistrict"
-            value={this.state.registrationForm.subdistrict}
-            className="mb-3"
-            onChange={(e) => {
-              this.inputTextHandler(e, "registrationForm", "subdistrict");
-            }}
-          />
-          <Input
-            type="text"
-            placeholder="Area"
-            value={this.state.registrationForm.area}
-            className="mb-3"
-            onChange={(e) => {
-              this.inputTextHandler(e, "registrationForm", "area");
-            }}
-          />
-          <Input
-            type="textarea"
-            name="text"
-            id="exampleText"
-            placeholder="Address"
-            value={this.state.registrationForm.address}
-            className="mb-3"
-            onChange={(e) => {
-              this.inputTextHandler(e, "registrationForm", "address");
-            }}
-          />
-          <Row form>
-            <Col md={6}>
-              <FormGroup>
-                <Input
-                  type="text"
-                  value={this.state.registrationForm.rt}
-                  placeholder="RT"
-                  className="mb-3"
-                  onChange={(e) => {
-                    this.inputTextHandler(e, "registrationForm", "rt");
-                  }}
-                />
-              </FormGroup>
-            </Col>
-            <Col md={6}>
-              <FormGroup>
-                <Input
-                  type="text"
-                  placeholder="RW"
-                  value={this.state.registrationForm.rw}
-                  className="mb-3"
-                  onChange={(e) => {
-                    this.inputTextHandler(e, "registrationForm", "rw");
-                  }}
-                />
-              </FormGroup>
-              {/* Section 3 */}
-              <Input
-                type="text"
-                placeholder="About"
-                value={this.state.therapistForm.about}
-                className="mb-3"
-                onChange={(e) => {
-                  this.inputTextHandler(e, "therapistForm", "about");
-                }}
-              />
-              <Input
-                type="text"
-                placeholder="Experience"
-                value={this.state.therapistForm.experience}
-                className="mb-3"
-                onChange={(e) => {
-                  this.inputTextHandler(e, "therapistForm", "experience");
-                }}
-              />
-              <Input
-                type="text"
-                placeholder="Job Description"
-                className="mb-3"
-                value={this.state.therapistForm.jobdesc}
-                onChange={(e) => {
-                  this.inputTextHandler(e, "therapistForm", "jobdesc");
-                }}
-              />
-              <Input
-                type="text"
-                placeholder="Service Fee"
-                value={this.state.therapistForm.serviceFee}
-                className="mb-3"
-                onChange={(e) => {
-                  this.inputTextHandler(e, "therapistForm", "serviceFee");
-                }}
-              />
-              <Input
-                type="select"
-                name="select"
-                value={this.state.therapistForm.clinic.id}
-                id="exampleSelect"
-                placeholder="Clinic"
-                className="mb-3"
-                onChange={(e) => {
-                  this.changeClinic(e);
-                }}
-              >
-                <option>Choose Clinic..</option>
-                {this.renderClinics()}
-              </Input>
-
-              {/* Section 4 */}
-              {this.renderSpecialtyForm()}
-              {this.renderSpecialtyData()}
-              {/* {this.fungsiCoba()} */}
-              {/* {console.log(this.state.arrSpecialtyData[1])} */}
-              {this.state.specForm}
-            </Col>
-          </Row>
-          <ButtonCstm
-            onClick={() => this.addForm("next")}
-            className="mb-2"
-            type="coral"
-            style={{ width: "100%" }}
-          >
-            Add Specialty
-          </ButtonCstm>
-          <ButtonCstm
-            onClick={() => this.addForm("prev")}
-            className="mb-2"
-            type="coral"
-            style={{ width: "100%" }}
-          >
-            Remove Specialty
-          </ButtonCstm>
-          <ButtonCstm
-            onClick={this.registrationHandler}
-            // onClick={this.saveEdit}
-            // onClick={this.saveEditTherapist}
-            className="mb-2"
-            type="coral"
-            style={{ width: "100%" }}
-          >
-            Register
-          </ButtonCstm>
-        </Form>
         {/*  */}
         <TitleBar title="Manage Therapist" />
-        <div className="d-flex p-4 col-12 justify-content-center flex-column align-items-center">
-          <div className="d-flex flex-column col-11">
-            <h2 className="m-0">List of Therapist</h2>
-            <p className="mt-2">
-              Sed orci nibh, ullamcorper vitae scelerisque non, fermentum eu
-              diam. Mauris vitae libero efficitur, lacinia nibh scelerisque,
-              pellentesque leo. Vivamus quis nisi elit. Cras egestas rhoncus
-              pulvinar. Curabitur vitae augue sollicitudin, tincidunt ex sed,
-              dignissim quam.
-            </p>
+        <div
+          className="d-flex p-4 col-12 justify-content-center align-items-start"
+          style={{ backgroundColor: "#f4f4fc" }}
+        >
+          <div className="d-flex p-0 col-3 flex-column">
+            <SideBar />
           </div>
-
-          <div className="d-flex mt-4 col-11">
-            <Table className="mb-0 col-9" bordered>
+          <div className="d-flex flex-column col-9">
+            <FormGroup className="align-items-center d-flex p-0 mb-4">
+              {/* Search*/}
+              <InputGroup className="mr-4" style={{ width: "350px" }}>
+                <InputGroupAddon addonType="prepend">
+                  <InputGroupText
+                    style={{ background: "#fc8454", border: "white" }}
+                  >
+                    <FontAwesomeIcon
+                      icon={faSearch}
+                      style={{ color: "white" }}
+                    />
+                  </InputGroupText>
+                </InputGroupAddon>
+                <Input
+                  placeholder="Find therapist!"
+                  style={{ background: "#white", border: "white" }}
+                  onChange={(e) => {
+                    this.SearchTherapist(e);
+                  }}
+                />
+              </InputGroup>
+              {/* Sort - Masih error kalo pake pagination*/}
+              <InputGroup className="mr-4" style={{ width: "180px" }}>
+                <InputGroupAddon addonType="prepend">
+                  <InputGroupText
+                    style={{ background: "#fc8454", border: "white" }}
+                  >
+                    <FontAwesomeIcon icon={faSort} style={{ color: "white" }} />
+                  </InputGroupText>
+                </InputGroupAddon>
+                <Input
+                  type="select"
+                  name="select"
+                  id="exampleSelect"
+                  style={{ background: "white", border: "white" }}
+                  onChange={(e) => {
+                    this.changeSort(e);
+                  }}
+                >
+                  <option>Sort by..</option>
+                  <option value="pricedesc">Highest Price</option>
+                  <option value="priceasc">Lowest Price</option>
+                </Input>
+              </InputGroup>
+              {/* Day */}
+              <InputGroup style={{ width: "180px" }}>
+                <InputGroupAddon addonType="prepend">
+                  <InputGroupText
+                    style={{ background: "#fc8454", border: "white" }}
+                  >
+                    <FontAwesomeIcon
+                      icon={faFilter}
+                      style={{ color: "white" }}
+                    />
+                  </InputGroupText>
+                </InputGroupAddon>
+                <Input
+                  type="select"
+                  name="select"
+                  id="exampleSelect"
+                  className="mr-4"
+                  style={{ background: "white", border: "white" }}
+                >
+                  <option value="">Status...</option>
+                </Input>
+              </InputGroup>
+              <ButtonCstm onClick={this.showAdd} className="">
+                Add Therapist
+              </ButtonCstm>
+            </FormGroup>
+            {/* Table */}
+            <Table
+              className="mb-0 border rounded"
+              style={{ backgroundColor: "white" }}
+            >
               <thead>
                 <tr>
                   <th
                     style={{
-                      backgroundColor: "#84c4d4",
+                      backgroundColor: "#fc8454",
                       color: "white",
                     }}
                   >
@@ -964,45 +798,983 @@ class ManageTherapist extends React.Component {
                   </th>
                   <th>Name</th>
                   <th>Clinic</th>
-                  <th>Specialization</th>
-                  <th>Fee</th>
+                  <th>Job</th>
+                  <th>Service Fee</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>{this.renderTherapist()}</tbody>
             </Table>
-
-            <div className="d-flex col-3 justify-content-end">
-              <div
-                className="row col-12 rounded p-4 flex-column"
-                style={{
-                  backgroundColor: "#f4cc3c",
-                  color: "white",
-                  height: "150px",
-                }}
-              >
-                <h5 className="mb-2">Search</h5>
-                <InputGroup className="">
-                  <InputGroupAddon addonType="prepend">
-                    <InputGroupText
-                      style={{ background: "#ffffff", border: "white" }}
-                    >
-                      <FontAwesomeIcon
-                        icon={faSearch}
-                        style={{ color: "black" }}
-                      />
-                    </InputGroupText>
-                  </InputGroupAddon>
-                  <Input
-                    placeholder="Find therapist!"
-                    style={{ background: "#ffffff", border: "white" }}
-                    onChange={(e) => {
-                      this.SearchTherapist(e);
-                    }}
-                  />
-                </InputGroup>
-              </div>
-            </div>
+            {this.renderPagination()}
           </div>
+
+          {/* Modal untuk munculin foto */}
+          <Modal
+            toggle={() => this.toggleModal("formOpen")}
+            isOpen={this.state.formOpen}
+            className="image-modal"
+          >
+            <ModalBody
+              className="d-flex p-4 flex-column"
+              style={{ backgroundImage: "" }}
+            >
+              <div className="d-flex p-4 border rounded col-12 align-items-center flex-column justify-content-center">
+                <FontAwesomeIcon
+                  icon={faUpload}
+                  style={{ color: "#fc8454", fontSize: "100px" }}
+                />
+
+                <div className="d-flex mt-4 p-0 col-7">
+                  <Input
+                    type="file"
+                    name="file"
+                    id="exampleFile"
+                    onChange={this.fileChangeHandler}
+                  />
+                </div>
+              </div>
+              <div className="d-flex col-12 p-0 justify-content-end mt-4">
+                <ButtonCstm className="mr-2" onClick={this.uploadPicture}>
+                  Save
+                </ButtonCstm>
+                <ButtonCstm
+                  type="coral-outline"
+                  onClick={() => this.toggleModal("formOpen")}
+                >
+                  Cancel
+                </ButtonCstm>
+              </div>
+            </ModalBody>
+          </Modal>
+
+          {/* Modal detail therapist */}
+          <Modal
+            toggle={() => this.toggleModal("editForm")}
+            isOpen={this.state.editForm}
+            className="image-modal modal-xl"
+          >
+            <ModalBody
+              className="d-flex p-4 flex-column"
+              style={{ backgroundImage: "" }}
+            >
+              <div className="d-flex p-4 border rounded col-12 flex-column ">
+                <h4 className="mb-3">Therapist Details</h4>
+                <div className="border"></div>
+                <div className="d-flex flex-wrap p-0 mt-4">
+                  <div className="d-flex p-0 col-4 flex-column justify-content-center align-items-center">
+                    <img
+                      src={this.state.registrationForm.image}
+                      alt=""
+                      className="border rounded-circle "
+                      style={{ width: "70%" }}
+                    />
+                    <FormGroup className="w-100 mt-3">
+                      <ButtonCstm onClick={() => this.toggleModal("formOpen")}>
+                        Upload
+                      </ButtonCstm>
+
+                      <FormText color="muted">
+                        Acceptable formats .jpg .png only
+                        <br />
+                        Max file size is 15mb and min file size is 10mb
+                      </FormText>
+                    </FormGroup>
+                  </div>
+                  <div className="d-flex pl-4 col-4 flex-column">
+                    <div className="row pr-3 pl-3">
+                      <div className="col-5 d-flex p-0 align-items-center">
+                        Name
+                      </div>
+                      <div className="col-7 d-flex p-0">
+                        <Input
+                          type="text"
+                          value={this.state.registrationForm.name}
+                          className="m-0"
+                          style={{ width: "100%" }}
+                          onChange={(e) => {
+                            this.inputTextHandler(
+                              e,
+                              "registrationForm",
+                              "name"
+                            );
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="row pr-3 pl-3 mt-3">
+                      <div className="col-5 d-flex p-0 align-items-center">
+                        Username
+                      </div>
+                      <div className="col-7 d-flex p-0">
+                        <Input
+                          type="text"
+                          placeholder="Username"
+                          value={this.state.registrationForm.username}
+                          className="m-0"
+                          style={{ width: "100%" }}
+                          onChange={(e) => {
+                            this.inputTextHandler(
+                              e,
+                              "registrationForm",
+                              "username"
+                            );
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="row pr-3 pl-3 mt-3">
+                      <div className="col-5 d-flex p-0 align-items-center">
+                        Email
+                      </div>
+                      <div className="col-7 d-flex p-0">
+                        <Input
+                          type="email"
+                          placeholder="Email"
+                          value={this.state.registrationForm.email}
+                          className="m-0"
+                          style={{ width: "100%" }}
+                          onChange={(e) => {
+                            this.inputTextHandler(
+                              e,
+                              "registrationForm",
+                              "email"
+                            );
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="row pr-3 pl-3 mt-3">
+                      <div className="col-5 d-flex p-0 align-items-center">
+                        Password
+                      </div>
+                      <div className="col-7 d-flex p-0">
+                        <InputGroup className="m-0">
+                          <Input
+                            // className="m-0"
+                            // style={{ width: "100%" }}
+                            placeholder="Password"
+                            type={this.state.showPassword ? "text" : "password"}
+                            onChange={(e) => {
+                              this.inputTextHandler(
+                                e,
+                                "registrationForm",
+                                "password"
+                              );
+                            }}
+                          />
+                          <InputGroupAddon addonType="append">
+                            <InputGroupAddon addonType="prepend">
+                              <InputGroupText
+                                style={{
+                                  background: "#84c4d4",
+                                  border: "white",
+                                }}
+                                onClick={() => {
+                                  this.showPassword();
+                                }}
+                              >
+                                <FontAwesomeIcon
+                                  icon={faEye}
+                                  style={{ color: "white" }}
+                                />
+                              </InputGroupText>
+                            </InputGroupAddon>
+                          </InputGroupAddon>
+                        </InputGroup>
+                      </div>
+                    </div>
+                    <div className="row pr-3 pl-3 mt-3">
+                      <div className="col-5 d-flex p-0 align-items-center">
+                        Phone Number
+                      </div>
+                      <div className="col-7 d-flex p-0">
+                        <Input
+                          type="text"
+                          placeholder="Phone Number"
+                          className="m-0"
+                          style={{ width: "100%" }}
+                          value={this.state.registrationForm.phoneNumber}
+                          className="mb-3"
+                          onChange={(e) => {
+                            this.inputTextHandler(
+                              e,
+                              "registrationForm",
+                              "phoneNumber"
+                            );
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="d-flex p-0 pl-4 col-4 flex-column">
+                    <div className="row pr-3 pl-3">
+                      <div className="col-5 d-flex p-0 align-items-center">
+                        City
+                      </div>
+                      <div className="col-7 d-flex p-0">
+                        <Input
+                          type="select"
+                          name="select"
+                          id="exampleSelect"
+                          placeholder="City"
+                          value={this.state.registrationForm.city.id}
+                          className="m-0"
+                          style={{ width: "100%" }}
+                          // onChange={(e) => {
+                          //   this.changeCity(e);
+                          // }}
+                          onChange={(e) => {
+                            this.changeHandler(e, "city", "registrationForm");
+                          }}
+                        >
+                          <option>Choose City..</option>
+                          {this.renderCities()}
+                        </Input>
+                      </div>
+                    </div>
+                    <div className="row pr-3 pl-3 mt-3">
+                      <div className="col-5 d-flex p-0 align-items-center">
+                        Subdistrict
+                      </div>
+                      <div className="col-7 d-flex p-0">
+                        <Input
+                          type="text"
+                          placeholder="Subdistrict"
+                          className="m-0"
+                          style={{ width: "100%" }}
+                          value={this.state.registrationForm.subdistrict}
+                          onChange={(e) => {
+                            this.inputTextHandler(
+                              e,
+                              "registrationForm",
+                              "subdistrict"
+                            );
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="row pr-3 pl-3 mt-3">
+                      <div className="col-5 d-flex p-0 align-items-center">
+                        Area
+                      </div>
+                      <div className="col-7 d-flex p-0">
+                        <Input
+                          type="text"
+                          placeholder="Area"
+                          value={this.state.registrationForm.area}
+                          className="m-0"
+                          style={{ width: "100%" }}
+                          onChange={(e) => {
+                            this.inputTextHandler(
+                              e,
+                              "registrationForm",
+                              "area"
+                            );
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="row pr-3 pl-3 mt-3">
+                      <div className="col-5 d-flex p-0 align-items-center">
+                        Address
+                      </div>
+                      <div className="col-7 d-flex p-0">
+                        <Input
+                          type="textarea"
+                          name="text"
+                          id="exampleText"
+                          placeholder="Address"
+                          value={this.state.registrationForm.address}
+                          className="m-0"
+                          style={{ width: "100%" }}
+                          onChange={(e) => {
+                            this.inputTextHandler(
+                              e,
+                              "registrationForm",
+                              "address"
+                            );
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="row pr-3 pl-3 mt-3">
+                      <div className="col-5 d-flex p-0 align-items-center">
+                        RT / RW
+                      </div>
+                      <div className="col-7 d-flex p-0">
+                        <Row form>
+                          <Col md={4} className="">
+                            <Input
+                              type="text"
+                              value={this.state.registrationForm.rt}
+                              placeholder="RT"
+                              onChange={(e) => {
+                                this.inputTextHandler(
+                                  e,
+                                  "registrationForm",
+                                  "rt"
+                                );
+                              }}
+                            />
+                          </Col>
+                          <Col
+                            md={1}
+                            className="justify-content-center d-flex align-items-center"
+                          >
+                            /
+                          </Col>
+                          <Col md={4}>
+                            <Input
+                              type="text"
+                              placeholder="RW"
+                              value={this.state.registrationForm.rw}
+                              className="mb-3"
+                              onChange={(e) => {
+                                this.inputTextHandler(
+                                  e,
+                                  "registrationForm",
+                                  "rw"
+                                );
+                              }}
+                            />
+                          </Col>
+                        </Row>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="d-flex p-0 col-4 flex-column">
+                    <div className="row pr-3 pl-3">
+                      <div className="col-5 d-flex p-0 align-items-center">
+                        Clinic
+                      </div>
+                      <div className="col-7 d-flex p-0">
+                        <Input
+                          type="select"
+                          name="select"
+                          value={this.state.therapistForm.clinic.id}
+                          id="exampleSelect"
+                          placeholder="Clinic"
+                          // onChange={(e) => {
+                          //   this.changeClinic(e);
+                          // }}
+                          onChange={(e) => {
+                            this.changeHandler(e, "clinic", "therapistForm");
+                          }}
+                        >
+                          <option>Choose Clinic..</option>
+                          {this.renderClinics()}
+                        </Input>
+                      </div>
+                    </div>
+                    <div className="row pr-3 pl-3 mt-3">
+                      <div className="col-5 d-flex p-0 align-items-center">
+                        Service Fee
+                      </div>
+                      <div className="col-7 d-flex p-0">
+                        <Input
+                          type="text"
+                          placeholder="Service Fee"
+                          value={this.state.therapistForm.serviceFee}
+                          onChange={(e) => {
+                            this.inputTextHandler(
+                              e,
+                              "therapistForm",
+                              "serviceFee"
+                            );
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="row pr-3 pl-3 mt-3">
+                      <div className="col-5 d-flex p-0 align-items-center">
+                        Job Description
+                      </div>
+                      <div className="col-7 d-flex p-0">
+                        <Input
+                          type="text"
+                          placeholder="Job Description"
+                          value={this.state.therapistForm.jobdesc}
+                          onChange={(e) => {
+                            this.inputTextHandler(
+                              e,
+                              "therapistForm",
+                              "jobdesc"
+                            );
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="row pr-3 pl-3 mt-3">
+                      <div className="col-5 d-flex p-0 align-items-center">
+                        Experience
+                      </div>
+                      <div className="col-2 d-flex p-0">
+                        <Input
+                          type="text"
+                          placeholder="Experience"
+                          value={this.state.therapistForm.experience}
+                          style={{ width: "100%" }}
+                          onChange={(e) => {
+                            this.inputTextHandler(
+                              e,
+                              "therapistForm",
+                              "experience"
+                            );
+                          }}
+                        />
+                        <div className="col-5 d-flex pl-2 align-items-center">
+                          years
+                        </div>
+                      </div>
+                    </div>
+                    <div className="row pr-3 pl-3 mt-3">
+                      <div className="col-5 d-flex p-0 align-items-center">
+                        About
+                      </div>
+                      <div className="col-7 d-flex p-0">
+                        <Input
+                          type="textarea"
+                          name="text"
+                          id="exampleText"
+                          placeholder="About"
+                          value={this.state.therapistForm.about}
+                          onChange={(e) => {
+                            this.inputTextHandler(e, "therapistForm", "about");
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="d-flex p-0 pl-4 col-4 flex-column">
+                    <div className="row pr-3 pl-3">
+                      <div className="col-5 d-flex p-0 align-items-start">
+                        Specialty
+                      </div>
+                      <div className="col-7 flex-wrap flex-column d-flex p-0">
+                        {this.renderSpecialtyForm()}
+                        <div className="d-flex justify-content-start">
+                          <ButtonCstm
+                            onClick={() => this.addForm("next", "specialty")}
+                            type="coral"
+                            className="mr-2"
+                          >
+                            +
+                          </ButtonCstm>
+
+                          <ButtonCstm
+                            onClick={() => this.addForm("prev", "specialty")}
+                            type="coral"
+                            className=" "
+                          >
+                            --
+                          </ButtonCstm>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="d-flex pl-3 col-4 flex-column">
+                    <div className="row pl-3">
+                      <Table
+                        className="mb-0 border rounded"
+                        style={{ backgroundColor: "white" }}
+                      >
+                        <thead>
+                          <tr>
+                            <th
+                              style={{
+                                backgroundColor: "#fc8454",
+                                color: "white",
+                              }}
+                            >
+                              No
+                            </th>
+                            <th>Day</th>
+                            <th>Time</th>
+                          </tr>
+                        </thead>
+                        <tbody>{this.renderSchedule()}</tbody>
+                      </Table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="d-flex col-12 p-0 justify-content-end mt-4">
+                <ButtonCstm className="mr-2" onClick={this.saveEdit}>
+                  Save
+                </ButtonCstm>
+                <ButtonCstm className="mr-2" onClick={this.deleteTherapist}>
+                  Delete
+                </ButtonCstm>
+                <ButtonCstm
+                  type="coral-outline"
+                  onClick={() => this.toggleModal("editForm")}
+                >
+                  Cancel
+                </ButtonCstm>
+              </div>
+            </ModalBody>
+          </Modal>
+
+          {/* Modal untuk add form */}
+          <Modal
+            toggle={() => this.toggleModal("addForm")}
+            isOpen={this.state.addForm}
+            className="image-modal modal-xl"
+          >
+            <ModalBody
+              className="d-flex p-4 flex-column"
+              style={{ backgroundImage: "" }}
+            >
+              <div className="d-flex p-4 border rounded col-12 flex-column ">
+                <h4 className="mb-3">Add Therapist Data</h4>
+                <div className="border"></div>
+                <div className="d-flex flex-wrap p-0 mt-4">
+                  <div className="d-flex p-0 col-4 flex-column">
+                    <div className="row pr-3 pl-3">
+                      <div className="col-5 d-flex p-0 align-items-center">
+                        Name
+                      </div>
+                      <div className="col-7 d-flex p-0">
+                        <Input
+                          type="text"
+                          placeholder="Name"
+                          value={this.state.registrationForm.name}
+                          className="m-0"
+                          style={{ width: "100%" }}
+                          onChange={(e) => {
+                            this.inputTextHandler(
+                              e,
+                              "registrationForm",
+                              "name"
+                            );
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="row pr-3 pl-3 mt-3">
+                      <div className="col-5 d-flex p-0 align-items-center">
+                        Username
+                      </div>
+                      <div className="col-7 d-flex p-0">
+                        <Input
+                          type="text"
+                          placeholder="Username"
+                          value={this.state.registrationForm.username}
+                          className="m-0"
+                          style={{ width: "100%" }}
+                          onChange={(e) => {
+                            this.inputTextHandler(
+                              e,
+                              "registrationForm",
+                              "username"
+                            );
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="row pr-3 pl-3 mt-3">
+                      <div className="col-5 d-flex p-0 align-items-center">
+                        Email
+                      </div>
+                      <div className="col-7 d-flex p-0">
+                        <Input
+                          type="email"
+                          placeholder="Email"
+                          value={this.state.registrationForm.email}
+                          className="m-0"
+                          style={{ width: "100%" }}
+                          onChange={(e) => {
+                            this.inputTextHandler(
+                              e,
+                              "registrationForm",
+                              "email"
+                            );
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="row pr-3 pl-3 mt-3">
+                      <div className="col-5 d-flex p-0 align-items-center">
+                        Password
+                      </div>
+                      <div className="col-7 d-flex p-0">
+                        <InputGroup className="m-0">
+                          <Input
+                            // className="m-0"
+                            // style={{ width: "100%" }}
+                            placeholder="Password"
+                            type={this.state.showPassword ? "text" : "password"}
+                            onChange={(e) => {
+                              this.inputTextHandler(
+                                e,
+                                "registrationForm",
+                                "password"
+                              );
+                            }}
+                          />
+                          <InputGroupAddon addonType="append">
+                            <InputGroupAddon addonType="prepend">
+                              <InputGroupText
+                                style={{
+                                  background: "#84c4d4",
+                                  border: "white",
+                                }}
+                                onClick={() => {
+                                  this.showPassword();
+                                }}
+                              >
+                                <FontAwesomeIcon
+                                  icon={faEye}
+                                  style={{ color: "white" }}
+                                />
+                              </InputGroupText>
+                            </InputGroupAddon>
+                          </InputGroupAddon>
+                        </InputGroup>
+                      </div>
+                    </div>
+                    <div className="row pr-3 pl-3 mt-3">
+                      <div className="col-5 d-flex p-0 align-items-center">
+                        Phone Number
+                      </div>
+                      <div className="col-7 d-flex p-0">
+                        <Input
+                          type="text"
+                          placeholder="Phone Number"
+                          className="m-0"
+                          style={{ width: "100%" }}
+                          value={this.state.registrationForm.phoneNumber}
+                          className="mb-3"
+                          onChange={(e) => {
+                            this.inputTextHandler(
+                              e,
+                              "registrationForm",
+                              "phoneNumber"
+                            );
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <FormGroup className="w-100">
+                      <Input
+                        type="file"
+                        name="file"
+                        id="exampleFile"
+                        onChange={this.fileChangeHandler}
+                      />
+                      <FormText color="muted">Upload profile picture</FormText>
+                    </FormGroup>
+                  </div>
+                  <div className="d-flex p-0 pl-4 col-4 flex-column">
+                    <div className="row pr-3 pl-3">
+                      <div className="col-5 d-flex p-0 align-items-center">
+                        City
+                      </div>
+                      <div className="col-7 d-flex p-0">
+                        <Input
+                          type="select"
+                          name="select"
+                          id="exampleSelect"
+                          placeholder="City"
+                          value={this.state.registrationForm.city.id}
+                          className="m-0"
+                          style={{ width: "100%" }}
+                          // onChange={(e) => {
+                          //   this.changeCity(e);
+                          // }}
+                          onChange={(e) => {
+                            this.changeHandler(e, "city", "registrationForm");
+                          }}
+                        >
+                          <option>Choose City..</option>
+                          {this.renderCities()}
+                        </Input>
+                      </div>
+                    </div>
+                    <div className="row pr-3 pl-3 mt-3">
+                      <div className="col-5 d-flex p-0 align-items-center">
+                        Subdistrict
+                      </div>
+                      <div className="col-7 d-flex p-0">
+                        <Input
+                          type="text"
+                          placeholder="Subdistrict"
+                          className="m-0"
+                          style={{ width: "100%" }}
+                          value={this.state.registrationForm.subdistrict}
+                          onChange={(e) => {
+                            this.inputTextHandler(
+                              e,
+                              "registrationForm",
+                              "subdistrict"
+                            );
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="row pr-3 pl-3 mt-3">
+                      <div className="col-5 d-flex p-0 align-items-center">
+                        Area
+                      </div>
+                      <div className="col-7 d-flex p-0">
+                        <Input
+                          type="text"
+                          placeholder="Area"
+                          value={this.state.registrationForm.area}
+                          className="m-0"
+                          style={{ width: "100%" }}
+                          onChange={(e) => {
+                            this.inputTextHandler(
+                              e,
+                              "registrationForm",
+                              "area"
+                            );
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="row pr-3 pl-3 mt-3">
+                      <div className="col-5 d-flex p-0 align-items-center">
+                        Address
+                      </div>
+                      <div className="col-7 d-flex p-0">
+                        <Input
+                          type="textarea"
+                          name="text"
+                          id="exampleText"
+                          placeholder="Address"
+                          value={this.state.registrationForm.address}
+                          className="m-0"
+                          style={{ width: "100%" }}
+                          onChange={(e) => {
+                            this.inputTextHandler(
+                              e,
+                              "registrationForm",
+                              "address"
+                            );
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="row pr-3 pl-3 mt-3">
+                      <div className="col-5 d-flex p-0 align-items-center">
+                        RT / RW
+                      </div>
+                      <div className="col-7 d-flex p-0">
+                        <Row form>
+                          <Col md={4} className="">
+                            <Input
+                              type="text"
+                              value={this.state.registrationForm.rt}
+                              placeholder="RT"
+                              onChange={(e) => {
+                                this.inputTextHandler(
+                                  e,
+                                  "registrationForm",
+                                  "rt"
+                                );
+                              }}
+                            />
+                          </Col>
+                          <Col
+                            md={1}
+                            className="justify-content-center d-flex align-items-center"
+                          >
+                            /
+                          </Col>
+                          <Col md={4}>
+                            <Input
+                              type="text"
+                              placeholder="RW"
+                              value={this.state.registrationForm.rw}
+                              className="mb-3"
+                              onChange={(e) => {
+                                this.inputTextHandler(
+                                  e,
+                                  "registrationForm",
+                                  "rw"
+                                );
+                              }}
+                            />
+                          </Col>
+                        </Row>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="d-flex pl-4 col-4 flex-column">
+                    <div className="row pr-3 pl-3">
+                      <div className="col-5 d-flex p-0 align-items-center">
+                        Clinic
+                      </div>
+                      <div className="col-7 d-flex p-0">
+                        <Input
+                          type="select"
+                          name="select"
+                          value={this.state.therapistForm.clinic.id}
+                          id="exampleSelect"
+                          placeholder="Clinic"
+                          // onChange={(e) => {
+                          //   this.changeClinic(e);
+                          // }}
+                          onChange={(e) => {
+                            this.changeHandler(e, "clinic", "therapistForm");
+                          }}
+                        >
+                          <option>Choose Clinic..</option>
+                          {this.renderClinics()}
+                        </Input>
+                      </div>
+                    </div>
+                    <div className="row pr-3 pl-3 mt-3">
+                      <div className="col-5 d-flex p-0 align-items-center">
+                        Service Fee
+                      </div>
+                      <div className="col-7 d-flex p-0">
+                        <Input
+                          type="text"
+                          placeholder="Service Fee"
+                          value={this.state.therapistForm.serviceFee}
+                          onChange={(e) => {
+                            this.inputTextHandler(
+                              e,
+                              "therapistForm",
+                              "serviceFee"
+                            );
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="row pr-3 pl-3 mt-3">
+                      <div className="col-5 d-flex p-0 align-items-center">
+                        Job Description
+                      </div>
+                      <div className="col-7 d-flex p-0">
+                        <Input
+                          type="text"
+                          placeholder="Job Description"
+                          value={this.state.therapistForm.jobdesc}
+                          onChange={(e) => {
+                            this.inputTextHandler(
+                              e,
+                              "therapistForm",
+                              "jobdesc"
+                            );
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="row pr-3 pl-3 mt-3">
+                      <div className="col-5 d-flex p-0 align-items-center">
+                        Experience
+                      </div>
+                      <div className="col-2 d-flex p-0">
+                        <Input
+                          type="text"
+                          placeholder="Experience"
+                          value={this.state.therapistForm.experience}
+                          style={{ width: "100%" }}
+                          onChange={(e) => {
+                            this.inputTextHandler(
+                              e,
+                              "therapistForm",
+                              "experience"
+                            );
+                          }}
+                        />
+                        <div className="col-5 d-flex pl-2 align-items-center">
+                          years
+                        </div>
+                      </div>
+                    </div>
+                    <div className="row pr-3 pl-3 mt-3">
+                      <div className="col-5 d-flex p-0 align-items-center">
+                        About
+                      </div>
+                      <div className="col-7 d-flex p-0">
+                        <Input
+                          type="textarea"
+                          name="text"
+                          id="exampleText"
+                          placeholder="About"
+                          value={this.state.therapistForm.about}
+                          onChange={(e) => {
+                            this.inputTextHandler(e, "therapistForm", "about");
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="d-flex p-0 col-4 flex-column">
+                    <div className="row pr-3 pl-3">
+                      <div className="col-5 d-flex p-0 align-items-start">
+                        Specialty
+                      </div>
+                      <div className="col-7 flex-wrap flex-column d-flex p-0">
+                        {this.renderSpecialtyForm()}
+                        <div className="d-flex justify-content-start">
+                          <ButtonCstm
+                            onClick={() => this.addForm("next", "specialty")}
+                            type="coral"
+                            className="mr-2"
+                          >
+                            +
+                          </ButtonCstm>
+
+                          <ButtonCstm
+                            onClick={() => this.addForm("prev", "specialty")}
+                            type="coral"
+                            className=" "
+                          >
+                            --
+                          </ButtonCstm>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="d-flex pl-4 col-4 flex-column">
+                    <div className="row pr-3 pl-3">
+                      <div className="col-5 d-flex p-0 align-items-start">
+                        Service Schedule
+                      </div>
+                      <div className="col-7  flex-wrap flex-column d-flex pl-1">
+                        {this.renderScheduleForm()}
+                        <div className="d-flex justify-content-start">
+                          <ButtonCstm
+                            onClick={() => this.addForm("next", "hour")}
+                            type="coral"
+                            className="mr-2"
+                          >
+                            +
+                          </ButtonCstm>
+
+                          <ButtonCstm
+                            onClick={() => this.addForm("prev", "hour")}
+                            type="coral"
+                            className=" "
+                          >
+                            --
+                          </ButtonCstm>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="d-flex col-12 p-0 justify-content-end mt-4">
+                <ButtonCstm className="mr-2" onClick={this.registrationHandler}>
+                  Save
+                </ButtonCstm>
+                <ButtonCstm
+                  type="coral-outline"
+                  onClick={() => this.toggleModal("addForm")}
+                >
+                  Cancel
+                </ButtonCstm>
+              </div>
+            </ModalBody>
+          </Modal>
         </div>
       </>
     );
@@ -1020,3 +1792,46 @@ const mapDispatchToProps = {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManageTherapist);
+
+{
+  /* 
+{this.renderScheduleForm()}
+                        <div className="d-flex justify-content-between">
+                          <ButtonCstm
+                            onClick={() => this.addForm("next", "hour")}
+                            type="coral"
+                            className=""
+                          >
+                            +
+                          </ButtonCstm>
+
+                          <ButtonCstm
+                            onClick={() => this.addForm("prev", "hour")}
+                            type="coral"
+                            className=" "
+                          >
+                            --
+                          </ButtonCstm>
+                        </div>
+
+}
+
+// {this.renderSpecialtyData()}
+// {/* {this.fungsiCoba()} */
+}
+// {/* {console.log(this.state.arrSpecialtyData[1])} */}
+// {this.state.specForm}
+//   </Col>
+// </Row>
+
+// <ButtonCstm
+//   onClick={this.registrationHandler}
+//   // onClick={this.saveEdit}
+//   // onClick={this.saveEditTherapist}
+//   className="mb-2"
+//   type="coral"
+//   style={{ width: "100%" }}
+// >
+//   Register
+// </ButtonCstm>
+// </Form> */}

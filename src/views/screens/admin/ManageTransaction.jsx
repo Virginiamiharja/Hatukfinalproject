@@ -51,9 +51,10 @@ class ManageTransaction extends React.Component {
       reason: "",
       createdAt: "",
     },
+    type: "",
   };
 
-  getTransaction = (offset = 0, type = "latest") => {
+  getTransaction = (offset = 0, type = "priceasc") => {
     Axios.get(`${API_URL1}/transactions`, {
       params: {
         offset: offset,
@@ -160,19 +161,19 @@ class ManageTransaction extends React.Component {
   pagination = (type) => {
     let offset = this.state.offset;
     if (type == "next") {
-      offset += 5;
+      offset += 3;
       this.setState({ offset: offset });
     } else if (type == "prev") {
-      offset -= 5;
+      offset -= 3;
       this.setState({ offset: offset });
     }
-    this.getTransaction(offset);
+    this.getTransaction(offset, this.state.type);
   };
 
-  // Sorting dari back end masih error kalo pake pagination
   changeSort = (event) => {
     const { value } = event.target;
-    this.getTransaction(0, value);
+    this.setState({ type: value });
+    this.getTransaction(this.state.offset, value);
   };
 
   // Kayaknya bakal harus taro di redux supaya nanti bisa dipake di halaman terapis
@@ -269,7 +270,7 @@ class ManageTransaction extends React.Component {
                   //   this.changeDay(e);
                   // }}
                 >
-                  <option value="">Filter day..</option>
+                  <option value="">Status...</option>
                 </Input>
               </InputGroup>
             </FormGroup>

@@ -94,14 +94,15 @@ class UserProfile extends React.Component {
         <div
           className="d-flex p-4 mb-2 rounded"
           style={{
-            backgroundColor: this.state.indexColor[index],
-            color: "white",
+            backgroundColor: "white",
+            color: "black",
+            border: `3px solid ${this.state.indexColor[index]}`,
           }}
           onClick={() => this.changePage(index)}
         >
           <FontAwesomeIcon
             icon={this.state.arrIcon[index]}
-            style={{ fontSize: "25px" }}
+            style={{ fontSize: "25px", color: this.state.indexColor[index] }}
           />
           <h5 className="ml-4 mb-0">{value}</h5>
         </div>
