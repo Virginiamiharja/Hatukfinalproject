@@ -9,7 +9,8 @@ type ButtonTypes = {
     | "tomato"
     | "dodger-blue"
     | "light-blue"
-    | "sandy-brown";
+    | "sandy-brown"
+    | "coral-outline";
   children: any;
   style?: CSSProperties;
   className?: string;

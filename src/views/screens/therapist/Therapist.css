@@ -4,6 +4,20 @@
   --light-blue: #84c4d4;
   --dark-green: #8ccc7c;
 }
+
 .therapist-body {
   color: white !important;
+}
+
+.calendar-text {
+  font-family: Jost;
+  font-size: 14px;
+}
+
+.text {
+  font-size: 14px;
+}
+
+.text-blue {
+  color: var(--light-blue);
 }

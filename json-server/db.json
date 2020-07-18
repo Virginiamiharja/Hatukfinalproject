@@ -90,8 +90,8 @@
       "image": "",
       "role": "user",
       "cityId": 1,
-      "subdistrictId": "Kelapa Gading",
-      "areaId": "Kelapa Gading Barat",
+      "subdistrict": "Kelapa Gading",
+      "area": "Kelapa Gading Barat",
       "rt": "8",
       "rw": "9",
       "address": "Agung Utara 3C Blok A 28 No 20"
@@ -106,8 +106,8 @@
       "image": "",
       "role": "admin",
       "cityId": 1,
-      "subdistrictId": "Kelapa Gading",
-      "areaId": "Kelapa Gading Barat",
+      "subdistrict": "Kelapa Gading",
+      "area": "Kelapa Gading Barat",
       "rt": "8",
       "rw": "9",
       "address": "Agung Utara 3C Blok A 28 No 20"
@@ -122,8 +122,8 @@
       "image": "https://engineering.unl.edu/images/staff/Kayla_Person-small.jpg",
       "role": "therapist",
       "cityId": 1,
-      "subdistrictId": "Kelapa Gading",
-      "areaId": "Kelapa Gading Barat",
+      "subdistrict": "Kelapa Gading",
+      "area": "Kelapa Gading Barat",
       "rt": "8",
       "rw": "9",
       "address": "Agung Utara 3C Blok A 28 No 20"
@@ -138,8 +138,8 @@
       "image": "https://www.biography.com/.image/ar_8:10%2Cc_fill%2Ccs_srgb%2Cfl_progressive%2Cg_faces:center%2Cq_auto:good%2Cw_620/MTcyMzE0MzI2NTU0NjQ5ODEy/ang-lee-gettyimages-163118045.jpg",
       "role": "therapist",
       "cityId": 1,
-      "subdistrictId": "Kelapa Gading",
-      "areaId": "Kelapa Gading Barat",
+      "subdistrict": "Kelapa Gading",
+      "area": "Kelapa Gading Barat",
       "rt": "8",
       "rw": "9",
       "address": "Agung Utara 3C Blok A 28 No 20"
@@ -154,8 +154,8 @@
       "image": "https://engineering.unl.edu/images/staff/Bonnie_Martin.jpg",
       "role": "therapist",
       "cityId": 1,
-      "subdistrictId": "Kelapa Gading",
-      "areaId": "Kelapa Gading Barat",
+      "subdistrict": "Kelapa Gading",
+      "area": "Kelapa Gading Barat",
       "rt": "8",
       "rw": "9",
       "address": "Agung Utara 3C Blok A 28 No 20"
@@ -311,6 +311,22 @@
       "reviewdate": "12/6/2020",
       "rating": 5,
       "comment": " This was my first visit, and the entire experience was excellent - prompt, efficient, and very professional"
+    }
+  ],
+  "therapistschedules": [
+    { "id": 1, "therapistdetailId": 1, "dayId": 1, "workinghourId": 3 },
+    { "id": 2, "therapistdetailId": 1, "dayId": 2, "workinghourId": 4 },
+    { "id": 3, "therapistdetailId": 1, "dayId": 5, "workinghourId": 2 }
+  ],
+  "bookingrequests": [
+    {
+      "id": 1,
+      "userId": 1,
+      "therapistdetailId": 1,
+      "bookingcreateddate": "",
+      "status": "pending",
+      "therapistscheduleId": 1,
+      "therapistscheduledate": ""
     }
   ],
 

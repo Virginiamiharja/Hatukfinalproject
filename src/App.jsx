@@ -1,8 +1,10 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.css";
 import { Route, Switch, withRouter } from "react-router-dom";
+import Cookie from "universal-cookie";
+import { connect } from "react-redux";
+import { keepLoginHandler, cookieChecker } from "./redux/actions/";
 // Components
 import Navbar from "./views/components/navbar/Navbar";
 import Footer from "./views/components/footer/Footer";
@@ -12,11 +14,15 @@ import Article from "./views/screens/article/Article";
 import School from "./views/screens/school/School";
 import ArticleDetails from "./views/screens/article/ArticleDetails";
 import Authentication from "./views/screens/auth/Authentication";
-import Cookie from "universal-cookie";
-import { connect } from "react-redux";
-import { keepLoginHandler, cookieChecker } from "./redux/actions/";
 import Therapist from "./views/screens/therapist/Therapist";
 import TherapistDetail from "./views/screens/therapist/TherapistDetail";
+import BookingHistory from "./views/screens/userrole/BookingHistory";
+import ForgotPassword from "./views/screens/forgotpassword/ForgotPassword";
+import ResetPassword from "./views/screens/forgotpassword/ResetPassword";
+import UserProfile from "./views/screens/userprofile/UserProfile";
+import ManageTherapist from "./views/screens/admin/ManageTherapist";
+import ManageTransaction from "./views/screens/admin/ManageTransaction";
+import Dashboard from "./views/screens/admin/Dashboard";
 
 const cookieObject = new Cookie();
 
@@ -33,33 +39,64 @@ class App extends React.Component {
     }, 1000);
   }
 
+  renderRoutes = () => {
+    if (this.props.user.id) {
+      return (
+        <Route exact path="/userprofile/:userId" component={UserProfile} />
+      );
+    }
+  };
+
   render() {
-    // if (this.props.user.cookieChecked) {
-    return (
-      <div>
-        <Navbar />
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route exact path="/auth" component={Authentication} />
-          <Route exact path="/therapist" component={Therapist} />
-          <Route
-            exact
-            path="/therapistdetail/:id"
-            component={TherapistDetail}
-          />
-          <Route exact path="/article" component={Article} />
-          <Route
-            exact
-            path="/readarticle/:articleId"
-            component={ArticleDetails}
-          />
-          <Route exact path="/school" component={School} />
-        </Switch>
-        <Footer />
-      </div>
-    );
-    // }
-    // return <h2>Loading...</h2>;
+    if (this.props.user.cookieChecked) {
+      return (
+        <div>
+          <Navbar />
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route exact path="/auth" component={Authentication} />
+            <Route exact path="/forgotpassword" component={ForgotPassword} />
+            <Route
+              exact
+              path="/resetpassword/:userId"
+              component={ResetPassword}
+            />
+            {this.renderRoutes()}
+
+            <Route exact path="/admin/therapist" component={ManageTherapist} />
+            <Route
+              exact
+              path="/admin/transaction"
+              component={ManageTransaction}
+            />
+            <Route exact path="/admin/dashboard" component={Dashboard} />
+
+            <Route
+              exact
+              path="/bookinghistory/:userId"
+              component={BookingHistory}
+            />
+            {/* Border */}
+            <Route exact path="/therapist" component={Therapist} />
+            <Route
+              exact
+              path="/therapistdetail/:therapistId"
+              component={TherapistDetail}
+            />
+
+            <Route exact path="/article" component={Article} />
+            <Route
+              exact
+              path="/readarticle/:articleId"
+              component={ArticleDetails}
+            />
+            <Route exact path="/school" component={School} />
+          </Switch>
+          <Footer />
+        </div>
+      );
+    }
+    return <h2>Loading...</h2>;
   }
 }
 

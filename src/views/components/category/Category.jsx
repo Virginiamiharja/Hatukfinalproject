@@ -10,7 +10,7 @@ class Category extends React.Component {
           style={{
             width: "250px",
             border: "white",
-            borderRadius: "3px"
+            borderRadius: "3px",
           }}
         >
           {/* Layer 1 */}
@@ -23,9 +23,9 @@ class Category extends React.Component {
           <CardImgOverlay
             style={{
               backgroundColor: "black",
-              // Inget karen pake firefox opacity gabisa yang 50% jadi harus 0.5
+              // Inget karena pake firefox opacity gabisa yang 50% jadi harus 0.5
               opacity: "0.5",
-              borderRadius: "3px"
+              borderRadius: "3px",
             }}
           />
           {/* Layer 3 untuk tulisan */}

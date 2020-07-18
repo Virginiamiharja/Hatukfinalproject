@@ -19,7 +19,7 @@ import { connect } from "react-redux";
 class NavbarCstm extends React.Component {
   render() {
     return (
-      <Navbar className="d-flex justify-content-center align-items-center border">
+      <Navbar className="d-flex justify-content-center align-items-center">
         {/* Section 1 */}
         <div className="d-flex flex-column flex-lg-row align-items-center col-lg-10">
           {/* Logo */}
@@ -44,7 +44,7 @@ class NavbarCstm extends React.Component {
               >
                 <UncontrolledDropdown direction="down">
                   <DropdownToggle tag="a" className="nav-link" caret>
-                    Hello, {this.props.user.name}!
+                    Hello, {this.props.user.name}
                   </DropdownToggle>
                   <DropdownMenu>
                     <DropdownItem tag="a" href="/blah">
@@ -85,7 +85,7 @@ class NavbarCstm extends React.Component {
 
         {/* Section 2  */}
         <div className="d-flex flex-wrap align-items-center justify-content-center mb-3 col-12">
-          <div className="d-flex flex-column col-3 col-lg-2 mt-4">
+          <div className="row flex-column col-4 col-lg-2 mt-4">
             <div
               className="d-flex"
               style={{ width: "100%", height: "15px", background: "#84c4d4" }}
@@ -97,7 +97,7 @@ class NavbarCstm extends React.Component {
               Home
             </Link>
           </div>
-          <div className="d-flex flex-wrap flex-column col-3 col-lg-2 mt-4">
+          <div className="row flex-wrap flex-column col-4 col-lg-2 mt-4">
             <div
               className="d-flex"
               style={{ width: "100%", height: "15px", background: "#fc8454" }}
@@ -109,7 +109,7 @@ class NavbarCstm extends React.Component {
               About
             </Link>
           </div>
-          <div className="d-flex flex-wrap flex-column col-3 col-lg-2 mt-4">
+          <div className="row flex-wrap flex-column col-4 col-lg-2 mt-4">
             <div
               className="d-flex"
               style={{ width: "100%", height: "15px", background: "#f4cc3c" }}
@@ -121,7 +121,7 @@ class NavbarCstm extends React.Component {
               Therapist
             </Link>
           </div>
-          <div className="d-flex flex-wrap flex-column col-3 col-lg-2 mt-4">
+          <div className="row flex-wrap flex-column col-4 col-lg-2 mt-4">
             <div
               className="d-flex"
               style={{ width: "100%", height: "15px", background: "#8ccc7c" }}
@@ -133,7 +133,7 @@ class NavbarCstm extends React.Component {
               Article
             </Link>
           </div>
-          <div className="d-flex flex-wrap flex-column col-3 col-lg-2 mt-4">
+          <div className="row flex-wrap flex-column col-4 col-lg-2 mt-4">
             <div
               className="d-flex"
               style={{ width: "100%", height: "15px", background: "#84c4d4" }}
@@ -145,7 +145,7 @@ class NavbarCstm extends React.Component {
               School
             </Link>
           </div>
-          <div className="d-flex flex-wrap flex-column col-3 col-lg-2 mt-4">
+          <div className="row flex-wrap flex-column col-4 col-lg-2 mt-4">
             <div
               className="d-flex"
               style={{ width: "100%", height: "15px", background: "#fc8454" }}

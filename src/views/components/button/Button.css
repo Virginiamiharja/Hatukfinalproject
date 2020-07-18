@@ -29,11 +29,24 @@
   color: white;
 }
 
+.custom-btn-coral-outline {
+  border: 1px solid var(--coral);
+  background-color: white;
+  color: black;
+  cursor: pointer;
+}
+
 .custom-btn-coral:hover {
   border: 1px solid var(--coral);
   background-color: white;
   color: black;
   cursor: pointer;
+}
+
+.custom-btn-coral-outline:hover {
+  border: 1px solid var(--coral);
+  background-color: var(--coral);
+  color: white;
 }
 
 .custom-btn-green {
