@@ -162,12 +162,9 @@ class ManageTherapist extends React.Component {
     this.setState({ [type]: !this.state[type] });
   };
 
-  inputTextHandler = (event, form, field, index) => {
+  inputTextHandler = (event, form, field) => {
     const { value } = event.target;
-    // if (index < 0) {
     this.setState({ [form]: { ...this.state[form], [field]: value } });
-    // } else if (index >= 0) {
-    // }
   };
 
   showPassword = () => {
@@ -281,13 +278,8 @@ class ManageTherapist extends React.Component {
     });
   };
 
-  getTherapistDetails = (sortType = "") => {
-    Axios.get(`${API_URL1}/therapistdetails`, {
-      params: {
-        sortType,
-        offset: 0,
-      },
-    })
+  getTherapistDetails = () => {
+    Axios.get(`${API_URL1}/therapistdetails/pure`)
       .then((res) => {
         console.log(res.data);
         this.setState({ therapistDetails: res.data });
@@ -319,43 +311,6 @@ class ManageTherapist extends React.Component {
       arrNew[index].dayId = value;
       this.setState({ arrWokingHour: arrNew });
     }
-  };
-
-  renderPagination = () => {
-    return (
-      <div className="d-flex p-0 mt-4 flex-wrap justify-content-between">
-        <div className="d-flex p-0" onClick={() => this.pagination("prev")}>
-          {/* {this.state.offset == 0 ? null : ( */}
-          <FontAwesomeIcon
-            icon={faArrowAltCircleLeft}
-            style={{ color: "#fc8454", fontSize: "35px" }}
-          />
-          {/* )} */}
-        </div>
-        <div className="d-flex p-0" onClick={() => this.pagination("next")}>
-          {/* Masih bingung nih validasinya */}
-          {/* Karena kita limitnya 2 makanya dikali 2 */}
-          {/* {this.state.offset * 2 < this.state.therapistDetail.reviews.length ? ( */}
-          <FontAwesomeIcon
-            icon={faArrowAltCircleRight}
-            style={{ color: "#fc8454", fontSize: "35px" }}
-          />
-          {/* ) : null} */}
-        </div>
-      </div>
-    );
-  };
-
-  pagination = (type) => {
-    let offset = this.state.offset;
-    if (type == "next") {
-      offset += 5;
-      this.setState({ offset: offset });
-    } else if (type == "prev") {
-      offset -= 5;
-      this.setState({ offset: offset });
-    }
-    // this.getTransaction(offset);
   };
 
   renderSchedule = () => {
@@ -710,7 +665,7 @@ class ManageTherapist extends React.Component {
           <div className="d-flex p-0 col-3 flex-column">
             <SideBar />
           </div>
-          <div className="d-flex flex-column col-9">
+          <div className="d-flex flex-column pl-4 col-9">
             <FormGroup className="align-items-center d-flex p-0 mb-4">
               {/* Search*/}
               <InputGroup className="mr-4" style={{ width: "350px" }}>
@@ -733,7 +688,7 @@ class ManageTherapist extends React.Component {
                 />
               </InputGroup>
               {/* Sort - Masih error kalo pake pagination*/}
-              <InputGroup className="mr-4" style={{ width: "180px" }}>
+              {/* <InputGroup className="mr-4" style={{ width: "180px" }}>
                 <InputGroupAddon addonType="prepend">
                   <InputGroupText
                     style={{ background: "#fc8454", border: "white" }}
@@ -754,9 +709,9 @@ class ManageTherapist extends React.Component {
                   <option value="pricedesc">Highest Price</option>
                   <option value="priceasc">Lowest Price</option>
                 </Input>
-              </InputGroup>
+              </InputGroup> */}
               {/* Day */}
-              <InputGroup style={{ width: "180px" }}>
+              {/* <InputGroup style={{ width: "180px" }}>
                 <InputGroupAddon addonType="prepend">
                   <InputGroupText
                     style={{ background: "#fc8454", border: "white" }}
@@ -776,7 +731,7 @@ class ManageTherapist extends React.Component {
                 >
                   <option value="">Status...</option>
                 </Input>
-              </InputGroup>
+              </InputGroup> */}
               <ButtonCstm onClick={this.showAdd} className="">
                 Add Therapist
               </ButtonCstm>
@@ -805,7 +760,6 @@ class ManageTherapist extends React.Component {
               </thead>
               <tbody>{this.renderTherapist()}</tbody>
             </Table>
-            {this.renderPagination()}
           </div>
 
           {/* Modal untuk munculin foto */}

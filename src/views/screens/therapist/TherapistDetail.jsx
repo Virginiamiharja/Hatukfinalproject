@@ -3,6 +3,7 @@ import Axios from "axios";
 import { API_URL1 } from "../../../constants/API";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./Therapist.css";
+import { Table } from "reactstrap";
 import {
   faStar,
   faThumbsUp,
@@ -231,16 +232,19 @@ class TherapistDetail extends React.Component {
                     style={{ color: "#f4cc3c", fontSize: "20px" }}
                   />
                   <p className="col-9">{val.hour.hour}</p>
-                  {/* {val.isbooked ? null : ( */}
-                  <ButtonCstm
-                    onClick={
-                      // () => this.send(val.id, value)
-                      () => this.confirmationButton(index, value)
-                    }
-                  >
-                    Book Now
-                  </ButtonCstm>
-                  {/* )} */}
+                  {/* Kalo misalnya di jadwal ini ada salah satu aja requestnya yg booked, dia gabisa di booking */}
+                  {val.requests.find(
+                    (value) => value.status == "booked"
+                  ) ? null : (
+                    <ButtonCstm
+                      onClick={
+                        // () => this.send(val.id, value)
+                        () => this.confirmationButton(index, value)
+                      }
+                    >
+                      Book Now
+                    </ButtonCstm>
+                  )}
                 </div>
               </div>
             </>
@@ -315,27 +319,6 @@ class TherapistDetail extends React.Component {
       .catch((err) => {
         console.log(err);
       });
-
-    // return this.state.arrBookRequest.map((value) => {
-    //   Axios.post(
-    //     `${API_URL1}/requests/bookschedule`,
-    //     { serviceDate: value },
-    //     {
-    //       params: {
-    //         userId: this.props.user.id,
-    //         scheduleId: scheduleId,
-    //       },
-    //     }
-    //   )
-    //     .then((res) => {
-    //       console.log(res.data);
-    //       this.setState({ formOpen: false });
-    //       swal("Congrats!", "We have placed your booking", "success");
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
-    // });
   };
 
   toggleModal = () => {
@@ -382,7 +365,7 @@ class TherapistDetail extends React.Component {
   };
 
   useCode = () => {
-    let discCode = "missqueen";
+    let discCode = "diskon";
     if (this.state.discCode == discCode) {
       this.setState({ discPrice: 50000 });
     } else {
@@ -424,14 +407,19 @@ class TherapistDetail extends React.Component {
       date = new Date(result);
     }
 
-    return this.state.arrBookRequest.map((value) => {
+    return this.state.arrBookRequest.map((value, index) => {
       return (
-        <div>
-          <p>
-            {days[value.getDay()]}, {value.getDate()}{" "}
-            {this.state.month[value.getMonth()]} {value.getFullYear()}
-          </p>
-        </div>
+        <>
+          <tr>
+            <td>{index + 1}</td>
+            <td>
+              {" "}
+              {days[value.getDay()]}, {value.getDate()}{" "}
+              {this.state.month[value.getMonth()]} {value.getFullYear()}
+            </td>
+            <td>{this.state.bookingRequest.hour.hour}</td>
+          </tr>
+        </>
       );
     });
   };
@@ -606,16 +594,6 @@ class TherapistDetail extends React.Component {
           <ModalBody className="d-flex p-4" style={{ backgroundImage: "" }}>
             <div className="d-flex col-12 flex-column">
               <div className="row flex-wrap">
-                {/* Booking Details
-                <div className="col-12 d-flex flex-column border rounded mb-3 p-3">
-                  <h4 className="m-0">Booking Details</h4>
-                  <div className="mt-3 border">
-                    
-                    {this.renderCoba()}
-                  </div>
-                </div> */}
-
-                {/* Details */}
                 <div className="d-flex border flex-column rounded flex-wrap p-3 col-7">
                   <h4 className="mb-3">Appointment Details</h4>
                   <div className="border"></div>
@@ -694,10 +672,26 @@ class TherapistDetail extends React.Component {
                     </div>
                   </div>
                   <div className="row pr-3 pl-3 mt-3">
-                    <div className="col-5 d-flex p-0 ">Your Schedule</div>
-                    <div className="col-7 d-flex p-0">
-                      {this.renderUserSchedule()}
-                    </div>
+                    <Table
+                      className="mb-0 border rounded"
+                      style={{ backgroundColor: "white" }}
+                    >
+                      <thead>
+                        <tr>
+                          <th
+                            style={{
+                              backgroundColor: "#84c4d4",
+                              color: "white",
+                            }}
+                          >
+                            No
+                          </th>
+                          <th>Day</th>
+                          <th>Time</th>
+                        </tr>
+                      </thead>
+                      <tbody> {this.renderUserSchedule()}</tbody>
+                    </Table>
                   </div>
                 </div>
 

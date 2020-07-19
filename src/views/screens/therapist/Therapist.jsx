@@ -132,7 +132,7 @@ class Therapist extends React.Component {
     });
   };
 
-  getTherapistDetails = (offset = 0, sortType = "") => {
+  getTherapistDetails = (offset = 0, sortType = "ratingdesc") => {
     Axios.get(`${API_URL1}/therapistdetails`, {
       params: {
         sortType,
@@ -150,18 +150,18 @@ class Therapist extends React.Component {
 
   renderTherapistCard = () => {
     return this.state.therapistDetails.map((value) => {
-      // if (
-      //   value.user.name
-      //     .toLowerCase()
-      //     .includes(this.state.searchInput.toLowerCase()) &&
-      //   value.specialties.find((val) => {
-      //     return val.specialtyName.includes(this.state.specialtyFilter);
-      //   }) &&
-      //   value.therapistServiceSchedules.find((val) => {
-      //     return val.day.dayName.includes(this.state.dayFilter);
-      //   })
-      // )
-      return <TherapistCard therapistDetails={value} />;
+      if (
+        value.user.name
+          .toLowerCase()
+          .includes(this.state.searchInput.toLowerCase()) &&
+        value.specialties.find((val) => {
+          return val.specialtyName.includes(this.state.specialtyFilter);
+        }) &&
+        value.therapistServiceSchedules.find((val) => {
+          return val.day.dayName.includes(this.state.dayFilter);
+        })
+      )
+        return <TherapistCard therapistDetails={value} />;
     });
   };
 

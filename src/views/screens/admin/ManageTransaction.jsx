@@ -43,6 +43,8 @@ class ManageTransaction extends React.Component {
     editForm: false,
     image: "",
     offset: 0,
+    userList: [],
+    therapistList: [],
     editTransaction: {
       id: 0,
       totalPrice: 0,
@@ -50,8 +52,10 @@ class ManageTransaction extends React.Component {
       status: "",
       reason: "",
       createdAt: "",
+      bookingRequests: [],
     },
     type: "",
+    date: "",
   };
 
   getTransaction = (offset = 0, type = "priceasc") => {
@@ -80,42 +84,52 @@ class ManageTransaction extends React.Component {
 
   renderTransaction = () => {
     var date;
+    var date1;
 
     return this.state.transactions.map((value, index) => {
       date = new Date(value.createdAt);
-      return (
-        <>
-          <tr>
-            {/* Ditambahin offset biar kalo ke next dia nomornya tetep lanjut */}
-            <td>{this.state.offset + index + 1}</td>
-            <td>Nama Terapis</td>
-            <td>{priceFormatter(value.totalPrice)}</td>
-            <td>
-              {date.getDate()}/{date.getMonth() + 1}/{date.getFullYear()}
-            </td>
-            <td>
-              <ButtonCstm
-                type=""
-                onClick={() => {
-                  this.openHandler(index, "photo");
-                }}
-              >
-                Open
-              </ButtonCstm>
-            </td>
-            <td>{value.status}</td>
-            <td>
-              <ButtonCstm
-                onClick={() => {
-                  this.openHandler(index, "edit");
-                }}
-              >
-                Detail
-              </ButtonCstm>
-            </td>
-          </tr>
-        </>
-      );
+      if (
+        value.bookingRequests.find((val) => {
+          date1 = new Date(val.serviceDate);
+          let date2 = date1.toString().substr(0, 15);
+          return date2.includes(this.state.date.substr(0, 15));
+        })
+      )
+        return (
+          <>
+            <tr>
+              {/* Ditambahin offset biar kalo ke next dia nomornya tetep lanjut */}
+              <td>{this.state.offset + index + 1}</td>
+              <td>{this.renderTherapistTrx(value.id)}</td>
+              <td>{this.renderUserTrx(value.id)}</td>
+              <td>{priceFormatter(value.totalPrice)}</td>
+              <td>
+                {date.getDate()}/{date.getMonth() + 1}/{date.getFullYear()}
+              </td>
+              <td>{value.status}</td>
+              <td>
+                <ButtonCstm
+                  type=""
+                  onClick={() => {
+                    this.openHandler(index, "photo");
+                  }}
+                >
+                  Open
+                </ButtonCstm>
+              </td>
+
+              <td>
+                <ButtonCstm
+                  onClick={() => {
+                    this.openHandler(index, "edit");
+                  }}
+                >
+                  Detail
+                </ButtonCstm>
+              </td>
+            </tr>
+          </>
+        );
     });
   };
 
@@ -176,25 +190,69 @@ class ManageTransaction extends React.Component {
     this.getTransaction(this.state.offset, value);
   };
 
-  // Kayaknya bakal harus taro di redux supaya nanti bisa dipake di halaman terapis
+  renderBookingRequest = () => {
+    return this.state.editTransaction.bookingRequests.map((value, index) => {
+      return (
+        <>
+          <tr>
+            <td>{index + 1}</td>
+            <td>{value.serviceDate.substr(0, 10)}</td>
+          </tr>
+        </>
+      );
+    });
+  };
+
+  getUserList = () => {
+    Axios.get(`${API_URL1}/users/pure`)
+      .then((res) => {
+        // console.log(res.data);
+        this.setState({ userList: res.data });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  getTherapistList = () => {
+    Axios.get(`${API_URL1}/therapistdetails/pure`)
+      .then((res) => {
+        console.log(res.data);
+        this.setState({ therapistList: res.data });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  renderUserTrx = (trxId) => {
+    return this.state.userList.map((value) => {
+      if (
+        value.transactions.find((val) => {
+          return val.id == trxId;
+        })
+      )
+        return <>{value.name}</>;
+    });
+  };
+
+  renderTherapistTrx = (trxId) => {
+    return this.state.therapistList.map((value) => {
+      if (
+        value.transactions.find((val) => {
+          return val.id == trxId;
+        })
+      )
+        return <p>{value.user.name}</p>;
+    });
+  };
+
   save = () => {
-    // Axios.put(
-    //   `${API_URL1}/transactions/changestatus`,
-    //   this.state.editTransaction
-    // )
-    //   .then((res) => {
-    //     console.log(res.data);
-    //     swal("CONGRATS", "The transaction has been edited", "success");
-    //     this.getTransaction();
-    //     this.setState({ editForm: !this.state.editForm });
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
-    this.props.changeStatus(this.state.editTransaction);
-    // Temporary
-    this.getTransaction();
-    this.setState({ editForm: !this.state.editForm });
+    // this.props.changeStatus(this.state.editTransaction);
+    // // Temporary
+    // this.getTransaction();
+    // this.setState({ editForm: !this.state.editForm });
+    console.log(this.state.date.substr(0, 15));
   };
 
   changeStatus = (event) => {
@@ -206,10 +264,24 @@ class ManageTransaction extends React.Component {
 
   componentDidMount() {
     this.getTransaction();
+    this.getTherapistList();
+    this.getUserList();
   }
 
+  // Ini biar dapetin tanggal
+  renderOption = () => {
+    var date = new Date();
+    var result = date.setTime(date.getTime() + 1 * 24 * 60 * 60 * 1000);
+    var newDate = new Date(result);
+    return (
+      <option value={newDate}>
+        {/* {newDate.getDate()}/{newDate.getMonth() + 1}/{newDate.getFullYear()} */}
+        Booked Soon
+      </option>
+    );
+  };
+
   render() {
-    // Buat tanggal
     let date;
 
     return (
@@ -224,7 +296,6 @@ class ManageTransaction extends React.Component {
           </div>
           <div className="d-flex flex-column pl-4 pr-0 col-9">
             <FormGroup className="align-items-center d-flex p-0 mb-4">
-              {/* Sort - Masih error kalo pake pagination*/}
               <InputGroup className="mr-4" style={{ width: "180px" }}>
                 <InputGroupAddon addonType="prepend">
                   <InputGroupText
@@ -266,11 +337,13 @@ class ManageTransaction extends React.Component {
                   name="select"
                   id="exampleSelect"
                   style={{ background: "white", border: "white" }}
-                  // onChange={(e) => {
-                  //   this.changeDay(e);
-                  // }}
+                  onChange={(e) => {
+                    this.setState({ date: e.target.value });
+                  }}
                 >
-                  <option value="">Status...</option>
+                  <option value="">Filter by..</option>
+                  {/* Tanggal 1 hari yang akan datang */}
+                  {this.renderOption()}
                 </Input>
               </InputGroup>
             </FormGroup>
@@ -290,9 +363,9 @@ class ManageTransaction extends React.Component {
                     No
                   </th>
                   <th>Therapist</th>
+                  <th>Booking By</th>
                   <th>Total Price</th>
                   <th>Booking Date</th>
-                  <th>Receipt</th>
                   <th>Status</th>
                   <th></th>
                 </tr>
@@ -311,25 +384,11 @@ class ManageTransaction extends React.Component {
                 className="d-flex p-4 flex-column"
                 style={{ backgroundImage: "" }}
               >
-                <div className="d-flex p-4 border rounded col-12 align-items-center flex-column justify-content-center">
-                  <FontAwesomeIcon
-                    icon={faUpload}
-                    style={{ color: "#fc8454", fontSize: "100px" }}
-                  />
-
-                  <div className="d-flex mt-4 p-0 col-7">
-                    <Input
-                      type="file"
-                      name="file"
-                      id="exampleFile"
-                      // onChange={this.fileChangeHandler}
-                    />
-                  </div>
+                <div className="d-flex p-0 col-12">
+                  <img src={this.state.image} style={{ height: "" }} alt="" />
                 </div>
+
                 <div className="d-flex col-12 p-0 justify-content-end mt-4">
-                  <ButtonCstm className="mr-2" onClick="">
-                    Download
-                  </ButtonCstm>
                   <ButtonCstm
                     type="coral-outline"
                     onClick={() => this.toggleModal("photo")}
@@ -417,8 +476,8 @@ class ManageTransaction extends React.Component {
                         </option>
                         <option value="pending">Pending</option>
                         <option value="booked">Booked</option>
+                        <option value="finish">Finish</option>
                         <option value="reject">Reject</option>
-                        <option value="reject">Finish</option>
                       </Input>
                     </div>
                   </div>
@@ -446,6 +505,26 @@ class ManageTransaction extends React.Component {
                       </div>
                     </div>
                   ) : null}
+
+                  <Table
+                    className="mb-0 mt-3 border rounded"
+                    style={{ backgroundColor: "white" }}
+                  >
+                    <thead>
+                      <tr>
+                        <th
+                          style={{
+                            backgroundColor: "#fc8454",
+                            color: "white",
+                          }}
+                        >
+                          No
+                        </th>
+                        <th>Service Date</th>
+                      </tr>
+                    </thead>
+                    <tbody>{this.renderBookingRequest()}</tbody>
+                  </Table>
                 </div>
                 <div className="d-flex col-12 p-0 justify-content-end mt-4">
                   <ButtonCstm className="mr-2" onClick={this.save}>

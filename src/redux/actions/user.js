@@ -1,6 +1,9 @@
 import Axios from "axios";
 import { API_URL, API_URL1 } from "../../constants/API";
 import swal from "sweetalert";
+import Cookie from "universal-cookie";
+
+const cookieObject = new Cookie();
 
 export const loginHandler = (userLogin) => {
   const { username, password } = userLogin;
@@ -20,6 +23,7 @@ export const loginHandler = (userLogin) => {
       })
       .catch((err) => {
         console.log(err);
+        swal("Oops!", "Wrong username or password", "error");
         dispatch({
           type: "ON_LOGIN_FAILED",
           payload: "Wrong username or password",
@@ -27,34 +31,6 @@ export const loginHandler = (userLogin) => {
       });
   };
 };
-
-// export const loginHandler = (userLogin) => {
-//   const { username, password } = userLogin;
-//   return (dispatch) => {
-//     Axios.get(`${API_URL}/users`, {
-//       params: {
-//         username,
-//         password,
-//       },
-//     })
-//       .then((res) => {
-//         if (res.data.length > 0) {
-//           dispatch({
-//             type: "ON_LOGIN_SUCCESS",
-//             payload: res.data[0],
-//           });
-//         } else {
-//           dispatch({
-//             type: "ON_LOGIN_FAILED",
-//             payload: "Wrong username or password",
-//           });
-//         }
-//       })
-//       .catch((err) => {
-//         console.log(err);
-//       });
-//   };
-// };
 
 export const keepLoginHandler = (cookieResult) => {
   return (dispatch) => {
@@ -79,32 +55,6 @@ export const keepLoginHandler = (cookieResult) => {
       });
   };
 };
-
-// export const keepLoginHandler = (cookieResult) => {
-//   return (dispatch) => {
-//     Axios.get(`${API_URL}/users`, {
-//       params: {
-//         id: cookieResult.id,
-//       },
-//     })
-//       .then((res) => {
-//         if (res.data.length > 0) {
-//           dispatch({
-//             type: "ON_LOGIN_SUCCESS",
-//             payload: res.data[0],
-//           });
-//         } else {
-//           dispatch({
-//             type: "ON_LOGIN_FAILED",
-//             payload: "Wrong username or password",
-//           });
-//         }
-//       })
-//       .catch((err) => {
-//         console.log(err);
-//       });
-//   };
-// };
 
 export const registrationHandler = (userRegister, cityId) => {
   const { image } = userRegister;
@@ -133,6 +83,7 @@ export const registrationHandler = (userRegister, cityId) => {
       })
       .catch((err) => {
         console.log(err);
+        swal("Oops!", "Username or email has been registered", "error");
         dispatch({
           type: "ON_REGISTER_FAILED",
           payload: "Username has been registered",
@@ -140,50 +91,6 @@ export const registrationHandler = (userRegister, cityId) => {
       });
   };
 };
-
-// export const registrationHandler = (userRegister) => {
-//   const {
-//     name,
-//     username,
-//     email,
-//     password,
-//     phoneNumber,
-//     role,
-//     cityId,
-//     subdistrict,
-//     area,
-//     address,
-//     rt,
-//     rw,
-//   } = userRegister;
-//   return (dispatch) => {
-//     Axios.get(`${API_URL}/users`, {
-//       params: {
-//         username,
-//       },
-//     }).then((res) => {
-//       console.log(res);
-//       if (res.data.length > 0) {
-//         dispatch({
-//           type: "ON_REGISTER_FAILED",
-//           payload: "Username has been registered",
-//         });
-//       } else {
-//         Axios.post(`${API_URL}/users`, userRegister)
-//           .then((res) => {
-//             console.log(res);
-//             dispatch({
-//               type: "ON_LOGIN_SUCCESS",
-//               payload: res.data,
-//             });
-//           })
-//           .catch((err) => {
-//             console.log(err);
-//           });
-//       }
-//     });
-//   };
-// };
 
 export const cookieChecker = () => {
   return {
@@ -201,14 +108,21 @@ export const forgotPassword = (email) => {
       .then((res) => {
         console.log(res.data);
         swal(
-          "CONGRATS",
-          "Link to reset your password has been sent!",
+          "Congrats!",
+          "Link to reset your password has been sent",
           "success"
         );
       })
       .catch((err) => {
         console.log(err);
-        swal("OH NO", "Your email has not registered yet!", "error");
+        swal("Oops!", "Your email has not registered yet!", "error");
       });
+  };
+};
+
+export const logoutHandler = () => {
+  cookieObject.remove("authData", { path: "/" });
+  return {
+    type: "ON_LOGOUT_SUCCESS",
   };
 };

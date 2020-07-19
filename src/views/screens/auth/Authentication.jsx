@@ -85,33 +85,33 @@ class Authentication extends React.Component {
     });
   };
 
-  showErrorMsg = () => {
-    if (this.props.user.errMsg) {
-      if (this.state.activePage) {
-        return (
-          <Alert
-            color="danger"
-            isOpen={this.state.visible}
-            toggle={this.onDismiss}
-            className="mt-2"
-          >
-            <strong>Error!</strong> Wrong username or password
-          </Alert>
-        );
-      } else {
-        return (
-          <Alert
-            color="danger"
-            isOpen={this.state.visible}
-            toggle={this.onDismiss}
-            className="mt-2"
-          >
-            <strong>Error!</strong> Username has been registered
-          </Alert>
-        );
-      }
-    }
-  };
+  // showErrorMsg = () => {
+  //   if (this.props.user.errMsg) {
+  //     if (this.state.activePage) {
+  //       return (
+  //         <Alert
+  //           color="danger"
+  //           isOpen={this.state.visible}
+  //           toggle={this.onDismiss}
+  //           className="mt-2"
+  //         >
+  //           <strong>Error!</strong> Wrong username or password
+  //         </Alert>
+  //       );
+  //     } else {
+  //       return (
+  //         <Alert
+  //           color="danger"
+  //           isOpen={this.state.visible}
+  //           toggle={this.onDismiss}
+  //           className="mt-2"
+  //         >
+  //           <strong>Error!</strong> Username has been registered
+  //         </Alert>
+  //       );
+  //     }
+  //   }
+  // };
 
   onDismiss = () => {
     this.setState({ visible: !this.state.visible });
@@ -230,7 +230,7 @@ class Authentication extends React.Component {
               </p>
             </div>
             {/* Error message */}
-            {this.showErrorMsg()}
+            {/* {this.showErrorMsg()} */}
             {/* Form login */}
             <Form className="d-flex flex-column justify-content-center align-items-center mt-2">
               <Input
@@ -333,7 +333,7 @@ class Authentication extends React.Component {
               </p>
             </div>
             {/* Error message */}
-            {this.showErrorMsg()}
+            {/* {this.showErrorMsg()} */}
             {/* Registration Page */}
             <Form className="d-flex flex-column justify-content-center align-items-center mt-2">
               <Input

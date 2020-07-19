@@ -121,19 +121,26 @@ class NavbarCstm extends React.Component {
               Therapist
             </Link>
           </div>
-          <div className="row flex-wrap flex-column col-4 col-lg-2 mt-4">
-            <div
-              className="d-flex"
-              style={{ width: "100%", height: "15px", background: "#8ccc7c" }}
-            ></div>
-            <Link
-              to="/article"
-              className="d-flex justify-content-center align-items-center navbar-link navbar-green"
-            >
-              Article
-            </Link>
-          </div>
-          <div className="row flex-wrap flex-column col-4 col-lg-2 mt-4">
+          {this.props.user.id ? (
+            <div className="row flex-wrap flex-column col-4 col-lg-2 mt-4">
+              <div
+                className="d-flex"
+                style={{ width: "100%", height: "15px", background: "#8ccc7c" }}
+              ></div>
+              <Link
+                to={
+                  this.props.user.role == "user"
+                    ? `/userprofile/${this.props.user.id}`
+                    : "admin/dashboard"
+                }
+                className="d-flex justify-content-center align-items-center navbar-link navbar-green"
+              >
+                Dashboard
+              </Link>
+            </div>
+          ) : null}
+
+          {/* <div className="row flex-wrap flex-column col-4 col-lg-2 mt-4">
             <div
               className="d-flex"
               style={{ width: "100%", height: "15px", background: "#84c4d4" }}
@@ -144,8 +151,8 @@ class NavbarCstm extends React.Component {
             >
               School
             </Link>
-          </div>
-          <div className="row flex-wrap flex-column col-4 col-lg-2 mt-4">
+          </div> */}
+          {/* <div className="row flex-wrap flex-column col-4 col-lg-2 mt-4">
             <div
               className="d-flex"
               style={{ width: "100%", height: "15px", background: "#fc8454" }}
@@ -153,7 +160,7 @@ class NavbarCstm extends React.Component {
             <Link className="d-flex justify-content-center align-items-center navbar-link navbar-coral">
               Clinic
             </Link>
-          </div>
+          </div> */}
         </div>
       </Navbar>
     );

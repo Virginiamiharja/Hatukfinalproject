@@ -59,6 +59,7 @@ class App extends React.Component {
             <Route
               exact
               path="/resetpassword/:userId"
+              // path="/resetpassword/:verifyToken"
               component={ResetPassword}
             />
             {this.renderRoutes()}

@@ -41,10 +41,11 @@ class Dashboard extends React.Component {
       });
   };
 
-  getTherapist = (sortType = "") => {
+  getTherapist = (offset = 0, sortType = "dashboard") => {
     Axios.get(`${API_URL1}/therapistdetails`, {
       params: {
         sortType,
+        offset,
       },
     })
       .then((res) => {
@@ -97,9 +98,14 @@ class Dashboard extends React.Component {
       });
   };
 
-  // Cuma dapetin transaction yang statusnya booked doang
+  // Cuma dapetin transaction yang statusnya booked dan finish doang
   getTransactions = () => {
-    Axios.get(`${API_URL1}/transactions`)
+    Axios.get(`${API_URL1}/transactions`, {
+      params: {
+        offset: 0,
+        type: "dashboard",
+      },
+    })
       .then((res) => {
         // console.log(res.data);
         this.setState({ transactions: res.data });
@@ -141,45 +147,45 @@ class Dashboard extends React.Component {
       });
   };
 
-  getCustomizeTherapist = () => {
-    Axios.get(`${API_URL1}/therapistdetails/custom`)
-      .then((res) => {
-        // console.log(res.data);
-        // Tadinya kan datanya itu array mentah gaada namanya, jadinya mau dimapping in lewat sini
-        let obj = {
-          name: "",
-          clinic: "",
-          serviceFee: 0,
-          booking: 0,
-          earnings: 0,
-          id: 0,
-          openForm: false,
-        };
+  // getCustomizeTherapist = () => {
+  //   Axios.get(`${API_URL1}/therapistdetails/custom`)
+  //     .then((res) => {
+  //       // console.log(res.data);
+  //       // Tadinya kan datanya itu array mentah gaada namanya, jadinya mau dimapping in lewat sini
+  //       let obj = {
+  //         name: "",
+  //         clinic: "",
+  //         serviceFee: 0,
+  //         booking: 0,
+  //         earnings: 0,
+  //         id: 0,
+  //         openForm: false,
+  //       };
 
-        let arrResData = [];
+  //       let arrResData = [];
 
-        for (let i = 0; i < res.data.length; i++) {
-          for (let j = 0; j < res.data[i].length; j++) {
-            obj = {
-              ...obj,
-              name: res.data[i][0],
-              clinic: res.data[i][1],
-              serviceFee: res.data[i][2],
-              booking: res.data[i][3],
-              earnings: res.data[i][4],
-              id: res.data[i][5],
-            };
-          }
-          arrResData.push(obj);
-          // console.log(obj);
-          // console.log(arrResData);
-        }
-        this.setState({ therapistCustom: arrResData });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  //       for (let i = 0; i < res.data.length; i++) {
+  //         for (let j = 0; j < res.data[i].length; j++) {
+  //           obj = {
+  //             ...obj,
+  //             name: res.data[i][0],
+  //             clinic: res.data[i][1],
+  //             serviceFee: res.data[i][2],
+  //             booking: res.data[i][3],
+  //             earnings: res.data[i][4],
+  //             id: res.data[i][5],
+  //           };
+  //         }
+  //         arrResData.push(obj);
+  //         // console.log(obj);
+  //         // console.log(arrResData);
+  //       }
+  //       this.setState({ therapistCustom: arrResData });
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
   renderCustomizeTherapist = () => {
     // let arrSort1 = this.state.therapist.sort((a, b) => {
@@ -310,10 +316,19 @@ class Dashboard extends React.Component {
   renderTransaction = (index) => {
     return this.state.therapist[index].transactions
       .filter((value) => {
-        return value.status == "booked";
+        return value.status == "booked" || value.status == "finish";
       })
       .map((val) => {
-        return <p> {val.totalPrice}</p>;
+        return (
+          <div className="mt-1 d-flex p-0">
+            <p className="col-3">
+              Transaction Created: {val.createdAt.substr(0, 10)}
+            </p>
+            <p className="col-3">
+              Total Price: {priceFormatter(val.totalPrice)}
+            </p>
+          </div>
+        );
       });
   };
 
@@ -323,7 +338,7 @@ class Dashboard extends React.Component {
     this.getTransactions();
     this.getUsers();
     this.getCustomizeTransaction();
-    this.getCustomizeTherapist();
+    // this.getCustomizeTherapist();
     this.getTopSpending();
   }
 
@@ -338,7 +353,7 @@ class Dashboard extends React.Component {
           <div className="d-flex p-0 col-3 border flex-column">
             <SideBar />
           </div>
-          <div className="flex-column p-0 d-flex col-9">
+          <div className="flex-column pl-4 d-flex col-9">
             {/* Row 1 */}
             <div className="d-flex p-0 d-flex">
               <MenuBox

@@ -47,7 +47,7 @@ class ResetPassword extends React.Component {
     )
       .then((res) => {
         console.log(res);
-        swal("CONGRATS", "Your passwors has been changed", "success");
+        swal("Congrats!", "Your password has been changed", "success");
       })
       .catch((err) => {
         console.log(err);
