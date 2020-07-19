@@ -10,7 +10,8 @@ import {
   faHospital,
   faTrophy,
 } from "@fortawesome/free-solid-svg-icons";
-import { Table } from "reactstrap";
+import { Table, Modal, ModalBody, Input } from "reactstrap";
+import ButtonCstm from "../../components/button/Button";
 import { priceFormatter } from "../../../supports/helpers/formatter";
 import Axios from "axios";
 import { API_URL, API_URL1 } from "../../../constants/API";

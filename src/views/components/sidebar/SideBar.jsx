@@ -19,7 +19,7 @@ class SideBar extends React.Component {
       "/admin/dashboard",
       "/admin/therapist",
       "/admin/transaction",
-      "",
+      "/admin/user",
       "",
     ],
     arrIcon: [faTachometerAlt, faUserNurse, faWallet, faUser, faSignOutAlt],

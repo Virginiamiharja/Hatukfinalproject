@@ -447,12 +447,12 @@ class ManageTherapist extends React.Component {
     })
       .then((res) => {
         console.log(res.data);
-        swal("CONGRATS!", "Your image has been uploaded", "success");
+        swal("Congrats!", "The image has been uploaded", "success");
         this.setState({ formOpen: !this.state.formOpen });
       })
       .catch((err) => {
         console.log(err);
-        swal("OH NO!", "The image can't be uploaded", "error");
+        swal("Oops!", "The image can't be uploaded", "error");
       });
   };
   //
@@ -547,7 +547,7 @@ class ManageTherapist extends React.Component {
         // Buat ngerefresh
         this.getTherapistDetails();
         this.setState({ addForm: !this.state.addForm });
-        swal("CONGRATS", "The data has been updated", "success");
+        swal("Congrats!", "Therapist has been registered", "success");
       })
       .catch((err) => {
         console.log(err);
@@ -636,7 +636,7 @@ class ManageTherapist extends React.Component {
     })
       .then((res) => {
         console.log(res.data);
-        swal("CONGRATS", "The data has been deleted", "success");
+        swal("Congrats!", "Therapist has been deleted", "success");
         this.getTherapistDetails();
       })
       .catch((err) => {

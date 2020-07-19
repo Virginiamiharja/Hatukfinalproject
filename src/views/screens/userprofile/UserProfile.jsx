@@ -106,7 +106,17 @@ class UserProfile extends React.Component {
     date: "",
   };
 
-  inputTextHandler = (event, field) => {
+  // Error, tadinya engga gangerti salah dimana
+  // inputTextHandler = (event, field) => {
+  //   const { value } = event.target;
+  //   if (field == "currPass") {
+  //     this.setState({ [field]: value });
+  //   } else {
+  //     this.setState({ userData: { ...this.state.userData, [field]: value } });
+  //   }
+  // };
+
+  textHandler = (event, field) => {
     const { value } = event.target;
     if (field == "currPass") {
       this.setState({ [field]: value });
@@ -235,15 +245,9 @@ class UserProfile extends React.Component {
               type="text"
               value={name}
               onChange={(event) => {
-                this.inputTextHandler(event, "name");
+                this.textHandler(event, "name");
               }}
-              // onChange={(e) => {
-              //   this.setState({
-              //     userData: { ...this.state.userData, name: e.target.value },
-              //   });
-              // }}
             />
-            {this.state.userData.name}
           </FormGroup>
           <FormGroup className="d-flex mb-0 mt-3 p-0 align-items-center">
             <Label className="m-0 d-flex p-0 align-items-center col-3">
@@ -253,8 +257,11 @@ class UserProfile extends React.Component {
               style={{ width: "50%" }}
               type="text"
               value={username}
+              // onChange={(e) => {
+              //   this.inputTextHandler(e, "username");
+              // }}
               onChange={(e) => {
-                this.inputTextHandler(e, "username");
+                this.textHandler(e, "username");
               }}
             />
           </FormGroup>
@@ -266,9 +273,6 @@ class UserProfile extends React.Component {
               style={{ width: "50%" }}
               type="email"
               value={email}
-              onChange={(e) => {
-                this.inputTextHandler(e, "email");
-              }}
               disabled
             />
           </FormGroup>
@@ -281,7 +285,7 @@ class UserProfile extends React.Component {
               type="text"
               value={phoneNumber}
               onChange={(e) => {
-                this.inputTextHandler(e, "phoneNumber");
+                this.textHandler(e, "phoneNumber");
               }}
             />
           </FormGroup>
@@ -296,10 +300,9 @@ class UserProfile extends React.Component {
             </Label>
             <Input
               style={{ width: "50%" }}
-              // className="mr-5"
               type="password"
               onChange={(e) => {
-                this.inputTextHandler(e, "currPass");
+                this.textHandler(e, "currPass");
               }}
             />
           </FormGroup>
@@ -325,7 +328,7 @@ class UserProfile extends React.Component {
               style={{ width: "50%" }}
               type="password"
               onChange={(e) => {
-                this.inputTextHandler(e, "password");
+                this.textHandler(e, "password");
               }}
             />
           </FormGroup>
@@ -370,7 +373,7 @@ class UserProfile extends React.Component {
               type="text"
               placeholder="Subdistrict"
               onChange={(e) => {
-                this.inputTextHandler(e, "subdistrict");
+                this.textHandler(e, "subdistrict");
               }}
               style={{ width: "50%" }}
               value={subdistrict}
@@ -384,7 +387,7 @@ class UserProfile extends React.Component {
             <Input
               type="text"
               onChange={(e) => {
-                this.inputTextHandler(e, "area");
+                this.textHandler(e, "area");
               }}
               style={{ width: "50%" }}
               value={area}
@@ -397,7 +400,7 @@ class UserProfile extends React.Component {
               type="textarea"
               placeholder="Subdistrict"
               onChange={(e) => {
-                this.inputTextHandler(e, "address");
+                this.textHandler(e, "address");
               }}
               style={{ width: "50%" }}
               value={address}
@@ -413,7 +416,7 @@ class UserProfile extends React.Component {
                   placeholder="RT"
                   value={rt}
                   onChange={(e) => {
-                    this.inputTextHandler(e, "rt");
+                    this.textHandler(e, "rt");
                   }}
                 />
               </Col>
@@ -431,7 +434,7 @@ class UserProfile extends React.Component {
                   placeholder="RW"
                   value={rw}
                   onChange={(e) => {
-                    this.inputTextHandler(e, "rw");
+                    this.textHandler(e, "rw");
                   }}
                 />
               </Col>
@@ -599,7 +602,7 @@ class UserProfile extends React.Component {
     })
       .then((res) => {
         console.log(res.data);
-        swal("CONGRATS!", "Your profile has been updated", "success");
+        swal("Congrats!", "Your profile has been updated", "success");
         this.getUserData();
         this.setState({
           currPass: "",
@@ -609,7 +612,7 @@ class UserProfile extends React.Component {
       })
       .catch((err) => {
         console.log(err);
-        swal("OH NO!", "Wrong old password!", "error");
+        swal("Oops!", "Wrong old password!", "error");
       });
   };
 
@@ -978,7 +981,7 @@ class UserProfile extends React.Component {
                     <option value="pending">Pending</option>
                     <option value="booked">Booked</option>
                     <option value="finish">Finish</option>
-                    {/* <option value="reject">Reject</option> */}
+                    <option value="reject">Reject</option>
                   </Input>
                 </div>
               </div>

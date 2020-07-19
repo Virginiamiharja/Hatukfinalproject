@@ -23,6 +23,7 @@ import UserProfile from "./views/screens/userprofile/UserProfile";
 import ManageTherapist from "./views/screens/admin/ManageTherapist";
 import ManageTransaction from "./views/screens/admin/ManageTransaction";
 import Dashboard from "./views/screens/admin/Dashboard";
+import ManageUser from "./views/screens/admin/ManageUser";
 
 const cookieObject = new Cookie();
 
@@ -64,6 +65,7 @@ class App extends React.Component {
             />
             {this.renderRoutes()}
 
+            <Route exact path="/admin/user" component={ManageUser} />
             <Route exact path="/admin/therapist" component={ManageTherapist} />
             <Route
               exact

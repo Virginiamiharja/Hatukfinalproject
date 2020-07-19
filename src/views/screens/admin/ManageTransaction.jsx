@@ -56,6 +56,7 @@ class ManageTransaction extends React.Component {
     },
     type: "",
     date: "",
+    status: "",
   };
 
   getTransaction = (offset = 0, type = "priceasc") => {
@@ -93,7 +94,8 @@ class ManageTransaction extends React.Component {
           date1 = new Date(val.serviceDate);
           let date2 = date1.toString().substr(0, 15);
           return date2.includes(this.state.date.substr(0, 15));
-        })
+        }) &&
+        value.status.includes(this.state.status)
       )
         return (
           <>
@@ -248,11 +250,10 @@ class ManageTransaction extends React.Component {
   };
 
   save = () => {
-    // this.props.changeStatus(this.state.editTransaction);
-    // // Temporary
-    // this.getTransaction();
-    // this.setState({ editForm: !this.state.editForm });
-    console.log(this.state.date.substr(0, 15));
+    this.props.changeStatus(this.state.editTransaction);
+    // Temporary
+    this.getTransaction();
+    this.setState({ editForm: !this.state.editForm });
   };
 
   changeStatus = (event) => {
@@ -276,7 +277,7 @@ class ManageTransaction extends React.Component {
     return (
       <option value={newDate}>
         {/* {newDate.getDate()}/{newDate.getMonth() + 1}/{newDate.getFullYear()} */}
-        Booked Soon
+        Upcoming Booking
       </option>
     );
   };
@@ -321,7 +322,7 @@ class ManageTransaction extends React.Component {
                 </Input>
               </InputGroup>
               {/* Day */}
-              <InputGroup style={{ width: "180px" }}>
+              <InputGroup className="mr-4" style={{ width: "180px" }}>
                 <InputGroupAddon addonType="prepend">
                   <InputGroupText
                     style={{ background: "#fc8454", border: "white" }}
@@ -346,7 +347,39 @@ class ManageTransaction extends React.Component {
                   {this.renderOption()}
                 </Input>
               </InputGroup>
+              {/* Dari status */}
+              <InputGroup style={{ width: "180px" }}>
+                <InputGroupAddon addonType="prepend">
+                  <InputGroupText
+                    style={{ background: "#fc8454", border: "white" }}
+                  >
+                    <FontAwesomeIcon
+                      icon={faFilter}
+                      style={{ color: "white" }}
+                    />
+                  </InputGroupText>
+                </InputGroupAddon>
+                <Input
+                  type="select"
+                  name="select"
+                  id="exampleSelect"
+                  style={{ background: "white", border: "white" }}
+                  onChange={(e) => {
+                    this.setState({ status: e.target.value });
+                  }}
+                >
+                  <option value="">Choose status..</option>
+                  <option value="waiting for payment">
+                    Waiting for Payment
+                  </option>
+                  <option value="pending">Pending</option>
+                  <option value="booked">Booked</option>
+                  <option value="finish">Finish</option>
+                  <option value="reject">Reject</option>
+                </Input>
+              </InputGroup>
             </FormGroup>
+
             {/* Table */}
             <Table
               className="mb-0 border rounded"
