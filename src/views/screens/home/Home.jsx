@@ -183,12 +183,11 @@ class Home extends React.Component {
             />
           </div>
         </div>
-
-        {/* Section 2*/}
-        {/* <div className="d-flex" style={{ height: "160px", color: "white" }}>
+        {/* Section 2 */}
+        <div className="d-flex" style={{ height: "160px", color: "white" }}>
           <div
             className="col-4 d-flex flex-column justify-content-center align-items-center"
-            style={{ background: "#1FACF4" }}
+            style={{ background: "#fc8454" }}
           >
             <h5 className="mt-2">Certified Therapist</h5>
             <p className="text-center mb-2">
@@ -198,7 +197,7 @@ class Home extends React.Component {
           </div>
           <div
             className="col-4 d-flex flex-column justify-content-center align-items-center"
-            style={{ background: "#F34840" }}
+            style={{ background: "#f4cc3c" }}
           >
             <h5 className="mt-2">Trusted School and Clinic</h5>
             <p className="text-center mb-2">
@@ -208,7 +207,7 @@ class Home extends React.Component {
           </div>
           <div
             className="col-4 d-flex flex-column justify-content-center align-items-center"
-            style={{ background: "#5C54C4" }}
+            style={{ background: "#84c4d4" }}
           >
             <h5 className="mt-2">Accurate Information</h5>
             <p className="text-center mb-2">
@@ -216,10 +215,9 @@ class Home extends React.Component {
               commodo ligula eget dolor. Aenean massa.
             </p>
           </div>
-        </div> */}
-
+        </div>
         {/* Section 3 */}
-        {/* <div
+        <div
           id="about"
           className="d-flex justify-content-start align-items-start p-5"
         >
@@ -232,22 +230,21 @@ class Home extends React.Component {
               Donec quam felis, ultricies nec, pellentesque eu, pretium quis,
               sem. Nulla consequat massa quis enim. Donec pede justo, fringilla
               vel, aliquet nec, vulputate eget, arcu.
-            </p> */}
-        {/* Mission */}
-        {/* <h3 className="mb-3">Our Mission</h3>
+            </p>
+            {/* Mission */}
+            <h3 className="mb-3">Our Mission</h3>
             <div className="d-flex flex-wrap justify-content-center align-items-center">
               {this.renderMission()}
             </div>
-          </div> */}
-        {/* Why us */}
-        {/* <div className="d-flex col-5 flex-column">
+          </div>
+          {/* Why us */}
+          <div className="d-flex col-5 flex-column">
             <h3 className="mb-3">Why Us?</h3>
             {this.renderReason()}
           </div>
-        </div> */}
-
+        </div>
         {/* Section 4 */}
-        {/* <div
+        <div
           className="d-flex flex-column justify-content-center align-items-center p-5"
           style={{ background: "#F2F2F2" }}
         >
@@ -263,7 +260,7 @@ class Home extends React.Component {
           <div className="d-flex col-8 flex-column">
             <Slider {...settings}>{this.renderParentTestimonials()}</Slider>
           </div>
-        </div> */}
+        </div>
       </div>
     );
   }

@@ -10,7 +10,7 @@ import {
   faChevronDown,
   faChevronUp,
   faSun,
-  faClock,
+  faHeart,
   faArrowAltCircleRight,
   faArrowAltCircleLeft,
 } from "@fortawesome/free-solid-svg-icons";
@@ -137,6 +137,7 @@ class TherapistDetail extends React.Component {
     discCode: "",
     discPrice: 0,
     offset: 0,
+    indexColor: ["#fc8454", "#f4cc3c", "#84c4d4", "#8ccc7c", "#6d68b8"],
   };
 
   getTherapistDetail = () => {
@@ -478,6 +479,27 @@ class TherapistDetail extends React.Component {
     );
   };
 
+  renderSpecialtyData = () => {
+    return this.state.therapistDetail.specialties.map((value, index) => {
+      return (
+        <div
+          className="d-flex p-4 mb-2 rounded"
+          style={{
+            backgroundColor: "white",
+            color: "black",
+            border: `3px solid ${this.state.indexColor[index]}`,
+          }}
+        >
+          <FontAwesomeIcon
+            icon={faHeart}
+            style={{ fontSize: "25px", color: this.state.indexColor[index] }}
+          />
+          <h5 className="ml-4 mb-0">{value.specialtyName}</h5>
+        </div>
+      );
+    });
+  };
+
   render() {
     const {
       id,
@@ -575,17 +597,17 @@ class TherapistDetail extends React.Component {
               <h5 className="mb-0">Therapist Review</h5>
               <div className="border d-flex flex-column rounded mt-2 pr-4 pb-4 pl-4 pt-0">
                 {this.renderTherapistReviews()}
-                {/* Pagination */}
-                {/* {this.state.therapistDetail.reviews.length != 1
-                  ? this.renderPagination()
-                  : null} */}
                 {this.renderPagination()}
               </div>
             </div>
           </div>
 
-          <div className="d-flex p-0 col-3 flex-column border"></div>
+          <div className="d-flex p-0 col-3 flex-column">
+            {this.renderSpecialtyData()}
+          </div>
         </div>
+
+        {/* Untuk payment */}
         <Modal
           toggle={this.toggleModal}
           isOpen={this.state.formOpen}

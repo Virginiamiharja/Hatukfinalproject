@@ -41,9 +41,18 @@ class App extends React.Component {
   }
 
   renderRoutes = () => {
-    if (this.props.user.id) {
+    if (this.props.user.role == "admin") {
       return (
-        <Route exact path="/userprofile/:userId" component={UserProfile} />
+        <>
+          <Route exact path="/admin/user" component={ManageUser} />
+          <Route exact path="/admin/therapist" component={ManageTherapist} />
+          <Route
+            exact
+            path="/admin/transaction"
+            component={ManageTransaction}
+          />
+          <Route exact path="/admin/dashboard" component={Dashboard} />
+        </>
       );
     }
   };
@@ -60,46 +69,23 @@ class App extends React.Component {
             <Route
               exact
               path="/resetpassword/:userId"
-              // path="/resetpassword/:verifyToken"
               component={ResetPassword}
             />
-            {this.renderRoutes()}
-
-            <Route exact path="/admin/user" component={ManageUser} />
-            <Route exact path="/admin/therapist" component={ManageTherapist} />
-            <Route
-              exact
-              path="/admin/transaction"
-              component={ManageTransaction}
-            />
-            <Route exact path="/admin/dashboard" component={Dashboard} />
-
-            <Route
-              exact
-              path="/bookinghistory/:userId"
-              component={BookingHistory}
-            />
-            {/* Border */}
+            <Route exact path="/userprofile/:userId" component={UserProfile} />
             <Route exact path="/therapist" component={Therapist} />
             <Route
               exact
               path="/therapistdetail/:therapistId"
               component={TherapistDetail}
             />
-
-            <Route exact path="/article" component={Article} />
-            <Route
-              exact
-              path="/readarticle/:articleId"
-              component={ArticleDetails}
-            />
-            <Route exact path="/school" component={School} />
+            {this.renderRoutes()}
           </Switch>
           <Footer />
         </div>
       );
     }
-    return <h2>Loading...</h2>;
+    // return <h2>Loading...</h2>;
+    return null;
   }
 }
 

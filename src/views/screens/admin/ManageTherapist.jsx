@@ -546,7 +546,7 @@ class ManageTherapist extends React.Component {
           });
         // Buat ngerefresh
         this.getTherapistDetails();
-        this.setState({ addForm: !this.state.addForm });
+        // this.setState({ addForm: !this.state.addForm });
         swal("Congrats!", "Therapist has been registered", "success");
       })
       .catch((err) => {
@@ -619,7 +619,7 @@ class ManageTherapist extends React.Component {
           });
         // Buat ngerefresh
         this.getTherapistDetails();
-        this.setState({ editForm: !this.state.editForm });
+        // this.setState({ editForm: !this.state.editForm });
         swal("CONGRATS", "The data has been updated", "success");
       })
       .catch((err) => {

@@ -33,7 +33,9 @@ class SideBar extends React.Component {
         <div
           className="d-flex p-4 mb-2 rounded"
           onClick={
-            this.props.user.role == "admin" ? this.props.logoutHandler : null
+            this.props.user.role == "admin" && index == 4
+              ? this.props.logoutHandler
+              : null
           }
           style={{
             backgroundColor: "white",

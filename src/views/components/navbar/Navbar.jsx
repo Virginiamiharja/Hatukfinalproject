@@ -129,7 +129,8 @@ class NavbarCstm extends React.Component {
               ></div>
               <Link
                 to={
-                  this.props.user.role == "user"
+                  this.props.user.role == "user" ||
+                  this.props.user.role == "therapist"
                     ? `/userprofile/${this.props.user.id}`
                     : "admin/dashboard"
                 }

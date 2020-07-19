@@ -57,6 +57,7 @@ class UserProfile extends React.Component {
       address: "",
       verifyToken: "",
       verified: false,
+      tdIndex: 0,
     },
 
     therapistForm: {
@@ -104,6 +105,7 @@ class UserProfile extends React.Component {
     // Ini untuk kirim review
     therapistId: 0,
     date: "",
+    tdIndex: 0,
   };
 
   // Error, tadinya engga gangerti salah dimana
@@ -509,10 +511,11 @@ class UserProfile extends React.Component {
     return null;
   };
 
-  openReviewForm = (trxId) => {
+  openReviewForm = (trxId, index) => {
     this.setState({
       reviewForm: !this.state.reviewForm,
       therapistId: this.renderTherapistTrx(trxId),
+      tdIndex: index,
     });
   };
 
@@ -536,7 +539,7 @@ class UserProfile extends React.Component {
                 {value.status == "finish" ? (
                   <ButtonCstm
                     onClick={() => {
-                      this.openReviewForm(value.id);
+                      this.openReviewForm(value.id, index);
                     }}
                   >
                     Review
@@ -644,6 +647,7 @@ class UserProfile extends React.Component {
       .then((res) => {
         console.log(res.data);
         swal("CONGRATS!", "Your image has been uploaded", "success");
+        this.getUserData();
       })
       .catch((err) => {
         console.log(err);
@@ -788,6 +792,10 @@ class UserProfile extends React.Component {
 
   sendComment = () => {
     const { comment, rating } = this.state.review;
+    console.log(this.state.therapistId);
+    console.log(this.renderTherapistTrx(54));
+    console.log(this.state.tdIndex);
+    console.log(this.state.therapistId[this.state.tdIndex]);
 
     Axios.post(
       `${API_URL1}/reviews/addreview`,
@@ -795,7 +803,8 @@ class UserProfile extends React.Component {
       {
         params: {
           userId: this.props.match.params.userId,
-          therapistDetailId: this.state.therapistId[0],
+          // Ni penyakitnya review
+          therapistDetailId: this.state.therapistId[1],
         },
       }
     )
@@ -805,6 +814,7 @@ class UserProfile extends React.Component {
       })
       .catch((err) => {
         console.log(err);
+        swal("Oops!", "You cannot post this review", "error");
       });
   };
 
